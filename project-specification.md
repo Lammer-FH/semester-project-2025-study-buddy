@@ -1,23 +1,25 @@
 ---
+
 marp: true
 author: Ana Matic, Jovana Kisin, Pavle Tomanovic, Viktoria Paschinger
-version: 1.0.0
+version: 2.0.0
 theme: a4-document
 paginate: true
 header: ' '
 footer: 'Advanced Web Frameworks 2025'
+
 ---
 
-# Project Specification - Course-Based Study Planner
+# Project Specification
 
 ## Resource Description
 
-| Resource   | Description                                  | Relationships                        |
-|------------|----------------------------------------------|--------------------------------------|
-| `user`     | A student account                            | Has many Courses                     |
-| `course`   | A university course                          | Belongs to User, has many Assignments|
-|`assignment`| A major task with a deadline                 | Belongs to Course, has many Tasks    |
-| `task`     | A subtask of an assignment created by a User | Belongs to Assignment and User       |
+| Resource     | Description                      | Relationships                             |
+|--------------|----------------------------------|-------------------------------------------|
+| `user`       | A student account                | Has many `courses`                        |
+| `course`     | A university course              | Belongs to `user`, has many `assignments` |
+| `assignment` | A major task with a deadline     | Belongs to `course`, has many `tasks`     |
+| `task`       | A subtask of an assignment       | Belongs to `assignment`                   |
 
 ---
 
@@ -25,7 +27,7 @@ footer: 'Advanced Web Frameworks 2025'
 
 ---
 
-### 🟦 User Story #1 – Static
+### 🟦 User Story #1
 
 **Story:**  
 As a new user, I want to see a welcome page explaining the app's purpose and how it helps manage course assignments and tasks, so that I know what to expect.
@@ -47,7 +49,10 @@ As a student, I want to view a list of all upcoming assignments sorted by deadli
 `assignment`
 
 **Implementation:**  
-GET `users/{id}/assignments?sort=date`
+GET `/assignments?sort=date`
+
+**Frontend Component:**  
+List of all assignments.
 
 ---
 
@@ -60,50 +65,91 @@ As a student, I want to view all assignments for a specific course, so I can foc
 `course`, `assignment`, `user`
 
 **Implementation:**  
-GET `course/{id}/assignments?sort=date`
-GET `user/{id}/courses/`
-Frontend View: Course List 
-Frontend View: Assignment list for specific course
+GET `/courses/`
+GET `courses/{id}/assignments?sort=date`
+
+**Frontend Component:**  
+Course List 
+Assignment list for specific course.
 
 ---
 
-### 🟥 User Story #4
+### 🟩 User Story #4
 
 **Story:**  
-As a student, I want to view the tasks related to a specific assignment, so that I can understand the required steps.
+As a student, I want an overview of my account, so that i can quickly and easily access all of my school related information.
 
 **Affected Resources:**  
-`task`, `assignment`, `user`
+`user`
 
 **Implementation:**  
-GET `assignments/{id}/tasks/`
-Assignment detail page showing task checklist
+GET `/users/{id}`
+
+**Frontend Views:**  
+- Account information
 
 ---
 
 ### 🟥 User Story #5
-
 **Story:**  
-As a student, I want to add and check tasks within an assignment, so I can manage my progress.
+As a student, I want to manage my courses, so I can organize my semester according to my actual enrollment.
 
 **Affected Resources:**  
-`task`, `assignment`, `user`
+`course`
 
-**Implementation:**  <!--Sollte hier der Endpoint tasks sein? -->
-Task checklist with add/edit
-POST `assignments/{id}/tasks/`
-PUT `assignments/{id}/tasks/{id}`
-Assignment detail page update task checklist
+**Implementation:**  
+GET `/courses`  
+POST `/courses`  
+PUT `/courses/{id}`  
+DELETE `/courses/{id}`
+
+**Frontend Views:**  
+- Course list with add/edit/delete options  
+- Form for adding/editing a course
+
 ---
 
 ### 🟥 User Story #6
-
 **Story:**  
-As a student, I want to delete tasks, so I can clean up tasks I don't need anymore.
+As a student, I want to manage assignments in a course (create, update, delete), so that I can keep the coursework up to date.
 
 **Affected Resources:**  
-`task`, `assignment`, `user`
+`assignment`
 
 **Implementation:**  
-DELTE `assignments/{id}/tasks/{id}`
-Assignment detail page update task checklist
+POST `/courses/{id}/assignments`  
+PUT `/assignments/{id}`  
+DELETE `/assignments/{id}`
+
+**Frontend Views:**  
+- Detail page for course assignments  
+- Form for assignment creation or modification
+
+---
+
+### 🟥 User Story #7
+
+**Story:**  
+As a student, I want to manage tasks for a specific assignment (create, view, update, delete), so I can stay organized and track my progress.
+
+**Affected Resources:**  
+`task`, `assignment`
+
+**Implementation:**  
+GET `/assignments/{id}/tasks`
+POST `/assignments/{id}/tasks`
+PUT `/tasks/{id}`  
+DELETE `/tasks/{id}`
+
+**Frontend Views:**  
+- Assignment detail page with task checklist  
+- Form for task creation or modification
+
+---
+
+## Note on Authentication
+
+Since the project does **not require registration or authentication**, all resources and actions are tied to a **single, hardcoded user**.  
+
+---
+
