@@ -10,7 +10,10 @@ footer: 'Advanced Web Frameworks 2025'
 
 ---
 
-# Project Specification
+# Project Specification Study Budy
+
+## Description
+This project is a web application designed to help students manage their course assignments and tasks. It allows users to create, view, update, and delete courses, assignments, and tasks.
 
 ## Resource Description
 
