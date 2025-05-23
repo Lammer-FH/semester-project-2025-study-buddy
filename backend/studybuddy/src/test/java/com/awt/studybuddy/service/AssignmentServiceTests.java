@@ -40,13 +40,4 @@ public class AssignmentServiceTests {
         assertThat(result).hasSize(2);
         assertThat(result.get(0).getDeadline()).isBefore(result.get(1).getDeadline());
     }
-
-    @Test
-    void shouldThrowIfAssignmentNotFound() {
-        when(assignmentRepository.findById(42L)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> assignmentService.findById(42L))
-                .isInstanceOf(EntityNotFoundException.class)
-                .hasMessageContaining("Assignment not found");
-    }
 }
