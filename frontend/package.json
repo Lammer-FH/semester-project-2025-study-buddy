@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@ionic/cli": "^7.2.1",
+    "@vue/cli": "^4.2.2"
+  }
+}
