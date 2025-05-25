@@ -50,8 +50,9 @@ h2 {
 
 .icon-wrapper {
   background-color: var(--ion-color-primary);
-  border-radius: 8px; /* oder 50% für Kreis */
+  border-radius: 4px;
   padding: 8px;
+  margin-right: 8px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -61,6 +62,10 @@ h2 {
 ion-icon {
   color: white; /* Icon-Farbe */
   font-size: 20px;
+}
+
+ion-item{
+    margin-bottom: 20px;
 }
 
 </style>
