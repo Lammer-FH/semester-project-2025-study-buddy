@@ -2,17 +2,18 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Tab 1</ion-title>
+        <ion-title>Assignment List</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Tab 1</ion-title>
+          <ion-title size="large">Assignment List</ion-title>
         </ion-toolbar>
       </ion-header>
-
-      <ExploreContainer name="Tab 1 page" />
+      <div class="ion-padding">
+        <h1>Assignment List coming soon</h1>
+      </div>
     </ion-content>
   </ion-page>
 </template>
