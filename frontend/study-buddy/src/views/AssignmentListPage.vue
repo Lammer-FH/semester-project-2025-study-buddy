@@ -13,9 +13,7 @@
       </ion-header>
       <div class="ion-padding">
         <ion-list>
-          <ion-item>Assignment 1</ion-item>
-          <ion-item>Assignment 2</ion-item>
-          <ion-item>Assignment 3</ion-item>
+          <ion-item v-for="item in assignments" :key="item">{{ item }}</ion-item>
         </ion-list>
       </div>
     </ion-content>
@@ -38,7 +36,7 @@ export default defineComponent({
   },
   data() {
     return {
-     
+      assignments: ['Assignment 1', 'Assignment 2', 'Assignment 3']
     }
   }
 })
