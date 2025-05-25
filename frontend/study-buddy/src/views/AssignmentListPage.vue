@@ -12,12 +12,7 @@
         </ion-toolbar>
       </ion-header>
       <div class="ion-padding">
-        <ion-list>
-          <assignment-list-item v-for="item in assignments"
-          :id="item.id"
-          :title="item.title"
-          :date="item.date"></assignment-list-item>
-        </ion-list>
+        <assignment-list :assignments="assignments"></assignment-list>
       </div>
     </ion-content>
   </ion-page>
@@ -26,7 +21,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem } from '@ionic/vue';
-import AssignmentListItem from '@/components/AssignmentListItem.vue';
+import AssignmentList from '@/components/AssignmentList.vue';
 
 export default defineComponent({
   components: {
@@ -37,7 +32,7 @@ export default defineComponent({
     IonContent,
     IonList,
     IonItem,
-    AssignmentListItem
+    AssignmentList
   },
   data() {
     return {
