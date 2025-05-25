@@ -12,12 +12,16 @@
         </ion-toolbar>
       </ion-header>
       <div class="ion-padding">
-        <h1>Assignment List coming soon</h1>
+        <ion-list>
+          <ion-item>Assignment 1</ion-item>
+          <ion-item>Assignment 2</ion-item>
+          <ion-item>Assignment 3</ion-item>
+        </ion-list>
       </div>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem } from '@ionic/vue';
 </script>
