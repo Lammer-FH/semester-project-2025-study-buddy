@@ -14,6 +14,7 @@ export async function getAssignments(): Promise<Assignment[]> {
     return response.data
   } catch (error) {
     console.warn('API /assignments failed, returning fallback data.')
+    console.error(error)
 
     // Fallback-Daten
     return [
