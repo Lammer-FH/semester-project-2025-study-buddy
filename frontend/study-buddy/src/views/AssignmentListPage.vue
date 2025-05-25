@@ -12,7 +12,8 @@
         </ion-toolbar>
       </ion-header>
       <div class="ion-padding">
-        <assignment-list :assignments="assignments"></assignment-list>
+        <div v-if="loading">Loading Assignments…</div>
+        <assignment-list v-else :assignments="assignments"></assignment-list>
       </div>
     </ion-content>
   </ion-page>
@@ -22,6 +23,7 @@
 import { defineComponent } from 'vue'
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem } from '@ionic/vue';
 import AssignmentList from '@/components/AssignmentList.vue';
+import { getAssignments, Assignment } from '@/services/assignmentService'
 
 export default defineComponent({
   components: {
@@ -36,12 +38,16 @@ export default defineComponent({
   },
   data() {
     return {
-      assignments: [
-        { id: 1, title: 'Assignment 1', date: '2025-05-25'},
-        { id: 2, title: 'Assignment 2', date: '2025-06-01'},
-        { id: 3, title: 'Assignment 3', date: '2025-06-10'}]
+      assignments: [] as Assignment[],
+      loading: true
 
     }
+  },
+  mounted() {
+    getAssignments().then(data => {
+      this.assignments = data
+      this.loading = false
+    })
   }
 })
 </script>
