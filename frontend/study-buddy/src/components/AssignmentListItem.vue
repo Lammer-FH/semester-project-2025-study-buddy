@@ -21,6 +21,7 @@ export default defineComponent({
     IonIcon
   },
   props: {
+    id: { type: Number, required: true},
     title: { type: String, required: true },
     date: { type: String, required: true },
     icon: { type: String, default: globeOutline }
@@ -29,7 +30,7 @@ export default defineComponent({
     return { iconList: [globeOutline, eyedropOutline, hardwareChipOutline, fitnessOutline]}
   },
   methods: {
-    getIconByTitle(title: string){
+    getIconByTitle(title: String){
         var charNumber = 0;
         for (let i = 0; i < title.length; i++) {
             charNumber += title.charCodeAt(i)

@@ -13,8 +13,8 @@
       </ion-header>
       <div class="ion-padding">
         <ion-list>
-          <assignment-list-item v-for="(item, index) in assignments"
-          :key="index"
+          <assignment-list-item v-for="item in assignments"
+          :id="item.id"
           :title="item.title"
           :date="item.date"></assignment-list-item>
         </ion-list>
@@ -42,9 +42,9 @@ export default defineComponent({
   data() {
     return {
       assignments: [
-        { title: 'Assignment 1', date: '2025-05-25'},
-        { title: 'Assignment 2', date: '2025-06-01'},
-        { title: 'Assignment 3', date: '2025-06-10'}]
+        { id: 1, title: 'Assignment 1', date: '2025-05-25'},
+        { id: 2, title: 'Assignment 2', date: '2025-06-01'},
+        { id: 3, title: 'Assignment 3', date: '2025-06-10'}]
 
     }
   }
