@@ -21,6 +21,10 @@ export default defineConfig({
       '/assignments': {
         target: 'http://localhost:3000',
         changeOrigin: true
+      },
+      '/courses': {
+        target: 'http://localhost:3000',
+        changeOrigin: true
       }
     }
   },
