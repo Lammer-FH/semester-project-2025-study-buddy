@@ -1,10 +1,5 @@
 import axios from 'axios'
-
-export interface Assignment {
-  id: number
-  title: string
-  date: string
-}
+import { Assignment } from '@/types/assignment'
 
 export async function getAssignments(): Promise<Assignment[]> {
   try {
