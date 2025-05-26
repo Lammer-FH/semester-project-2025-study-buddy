@@ -8,7 +8,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import AssignmentList from '@/components/AssignmentList.vue';
-import { getAssignments, Assignment } from '@/services/assignmentService'
+import { Assignment } from '@/types/assignment'
+import { getAssignments} from '@/services/assignmentService'
 
 export default defineComponent({
   components: {

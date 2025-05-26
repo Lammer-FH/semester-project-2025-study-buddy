@@ -1,10 +1,5 @@
+import { Course } from '@/types/course'
 import axios from 'axios'
-
-export interface Course {
-  id: number
-  title: string
-  description: string
-}
 
 export async function getCourses(): Promise<Course[]> {
   try {
