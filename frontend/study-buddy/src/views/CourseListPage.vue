@@ -7,8 +7,9 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import CourseList from '@/components/CourseList.vue';
-import { getCourses, Course } from '@/services/courseService'
+import CourseList from '@/components/CourseList.vue'
+import { getCourses } from '@/services/courseService'
+import {Course} from '@/types/course'
 
 export default defineComponent({
   components: {
