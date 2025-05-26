@@ -10,9 +10,11 @@
 import { defineComponent } from 'vue'
 import AssignmentList from '@/components/AssignmentList.vue';
 import { Assignment } from '@/types/assignment'
-import { getAssignments } from '@/services/assignmentService'
+import { getAssignmentByCourseId } from '@/services/courseService';
 
 export default defineComponent({
+  name: 'CoursePage',
+  props: ['course'],
   components: {
     AssignmentList
   },
@@ -24,7 +26,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    getAssignments().then(data => {
+    getAssignmentByCourseId(this.course.id).then(data => {
       this.assignments = data
       this.loading = false
     })
