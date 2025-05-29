@@ -16,6 +16,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/assignments': {
+        target: 'http://localhost:3000',
+        changeOrigin: true
+      }
+    }
+  },
   test: {
     globals: true,
     environment: 'jsdom'
