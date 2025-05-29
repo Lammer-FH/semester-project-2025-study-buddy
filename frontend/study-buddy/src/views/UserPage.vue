@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useUserStore } from "@/stores/UserStore";
+import { useUserStore } from "@/stores/userStore";
 import { IonItem, IonLabel, IonText, IonList } from '@ionic/vue';
 
 export default defineComponent({

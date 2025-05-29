@@ -10,6 +10,7 @@ import { defineComponent } from 'vue'
 import CourseList from '@/components/CourseList.vue'
 import { getCourses } from '@/services/courseService'
 import {Course} from '@/types/course'
+import { useCourseStore } from '@/stores/courseStore';
 
 export default defineComponent({
   components: {
@@ -17,16 +18,20 @@ export default defineComponent({
   },
   data() {
     return {
-      courses: [] as Course[],
-      loading: true
-
+      courseStore: useCourseStore()
+    }
+  },
+  computed:{
+    courses(): Course[]{
+      return this.courseStore.list;
+    },
+    loading(){
+      return this.courseStore.isLoading;
     }
   },
   mounted() {
-    getCourses().then(data => {
-      this.courses = data
-      console.log(data)
-      this.loading = false
+    getCourses().then((data) => {
+      this.courseStore.listAll();
     })
   }
 })

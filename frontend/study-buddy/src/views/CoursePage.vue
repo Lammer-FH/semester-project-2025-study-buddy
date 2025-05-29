@@ -7,36 +7,32 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import AssignmentList from '@/components/AssignmentList.vue';
-import { Assignment } from '@/types/assignment'
-import { getAssignmentByCourseId } from '@/services/courseService';
+import { defineComponent } from "vue";
+import AssignmentList from "@/components/AssignmentList.vue";
+import { Assignment } from "@/types/assignment";
+import { useCourseStore } from "@/stores/courseStore";
 
 export default defineComponent({
-  name: 'CoursePage',
+  name: "CoursePage",
   components: {
-    AssignmentList
+    AssignmentList,
   },
   data() {
     return {
-      courseId: Number(this.$route.params.id),
-      assignments: [] as Assignment[],
-      loading: true
-
-    }
+      courseStore: useCourseStore(),
+    };
   },
-  methods: {
-  async loadAssignments() {
-    if (this.courseId != null) {
-      this.loading = true
-      this.assignments = await getAssignmentByCourseId(this.courseId)
-      this.loading = false
-      }
-    }
+  computed: {
+    assignments(): Assignment[] {
+      return this.courseStore.currentCourseAssignments;
+    },
+    loading() {
+      return this.courseStore.isAssignmentListLoading;
+    },
   },
-  mounted(){
-   this.loadAssignments()
+  mounted() {
+    this.courseStore.selectCourse(Number(this.$route.params.id));
+    this.courseStore.listAllAssignmentsOfCurrentCourse();
   },
-})
+});
 </script>
-

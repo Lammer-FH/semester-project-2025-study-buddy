@@ -9,7 +9,7 @@
 import { defineComponent } from 'vue'
 import AssignmentList from '@/components/AssignmentList.vue';
 import { Assignment } from '@/types/assignment'
-import { getAssignments} from '@/services/assignmentService'
+import { useAssignmentStore } from '@/stores/assignmentStore';
 
 export default defineComponent({
   components: {
@@ -17,16 +17,20 @@ export default defineComponent({
   },
   data() {
     return {
-      assignments: [] as Assignment[],
-      loading: true
+      assignmentStore: useAssignmentStore()
 
     }
   },
+  computed:{
+    assignments(): Assignment[]{
+      return this.assignmentStore.list;
+    },
+    loading(){
+      return this.assignmentStore.isLoading;
+    }
+  },
   mounted() {
-    getAssignments().then(data => {
-      this.assignments = data
-      this.loading = false
-    })
+    this.assignmentStore.listAll();
   }
 })
 </script>
