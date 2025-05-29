@@ -8,6 +8,7 @@ export const useCourseStore = defineStore("course", {
     currentCourse: null as Course | null,
     currentCourseAssignments: [] as Assignment[],
     isLoading: false,
+    isAssignmentListLoading: false,
   }),
   actions: {
     async listAll(): Promise<void> {
@@ -25,12 +26,14 @@ export const useCourseStore = defineStore("course", {
     },
 
     async listAllAssignmentsOfCurrentCourse(): Promise<void> {
+      this.isAssignmentListLoading = true;
       try {
         if (this.currentCourse != undefined)
           this.currentCourseAssignments = await getAssignmentByCourseId(
             this.currentCourse.id
           );
       } finally {
+        this.isAssignmentListLoading = false;
       }
     },
   },
