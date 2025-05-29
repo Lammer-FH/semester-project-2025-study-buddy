@@ -9,7 +9,7 @@
 import { defineComponent } from 'vue'
 import AssignmentList from '@/components/AssignmentList.vue';
 import { Assignment } from '@/types/assignment'
-import { useAssignmentStore } from '@/stores/AssignmentStore';
+import { useAssignmentStore } from '@/stores/assignmentStore';
 
 export default defineComponent({
   components: {
