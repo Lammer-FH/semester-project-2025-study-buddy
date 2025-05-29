@@ -14,23 +14,29 @@ import { getAssignmentByCourseId } from '@/services/courseService';
 
 export default defineComponent({
   name: 'CoursePage',
-  props: ['course'],
   components: {
     AssignmentList
   },
   data() {
     return {
+      courseId: Number(this.$route.params.id),
       assignments: [] as Assignment[],
       loading: true
 
     }
   },
-  mounted() {
-    getAssignmentByCourseId(this.course.id).then(data => {
-      this.assignments = data
+  methods: {
+  async loadAssignments() {
+    if (this.courseId != null) {
+      this.loading = true
+      this.assignments = await getAssignmentByCourseId(this.courseId)
       this.loading = false
-    })
-  }
+      }
+    }
+  },
+  mounted(){
+   this.loadAssignments()
+  },
 })
 </script>
 

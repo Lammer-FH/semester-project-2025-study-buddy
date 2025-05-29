@@ -24,6 +24,10 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/CourseListPage.vue')
       },
       {
+        path: 'course/:id',
+        component: ()=> import('../views/CoursePage.vue')
+      },
+      {
         path: 'tab3',
         component: () => import('@/views/Tab3Page.vue')
       },
@@ -32,7 +36,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/InfoPage.vue')
       }
     ]
-  }
+  }  
 ]
 
 const router = createRouter({

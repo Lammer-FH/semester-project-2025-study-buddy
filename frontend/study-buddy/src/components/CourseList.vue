@@ -3,7 +3,8 @@
         <ion-list>
           <course-list-item v-for="item in courses"
           :id="item.id"
-          :title="item.title">
+          :title="item.title"
+          :router-link="`course/${item.id}`">
         </course-list-item>
         </ion-list>
     </div>
