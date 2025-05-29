@@ -14,12 +14,22 @@ export const useUserStore = defineStore("user", {
       try {
         const response = await api.get<User>(`/users/${id}`);
         this.currentUser = response.data;
+        console.log("In try of UserStore");
       } catch (error) {
         console.warn(`API /users/${id} failed.`);
         console.error(error);
-        this.currentUser = { id: 1, name: "FallbackUser", email: "fallbacl@technikum.wien", program: "MSE", semester: 2, studentNumber: 7216817 };
+        this.currentUser = {
+          id: 1,
+          name: "FallbackUser",
+          email: "fallbacl@technikum.wien",
+          program: "MSE",
+          semester: 2,
+          studentNumber: 7216817,
+        };
+
       } finally {
         this.isLoading = false;
+        console.log("In finally");
       }
     },
   },
