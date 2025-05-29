@@ -1,25 +1,37 @@
-import { defineStore } from 'pinia'
-import type { Course } from '@/types/course'
-import { getCourses } from '@/services/courseService' 
-export const useCourseStore = defineStore('course', {
+import { defineStore } from "pinia";
+import type { Course } from "@/types/course";
+import { getCourses, getAssignmentByCourseId } from "@/services/courseService";
+import { Assignment } from "@/types/assignment";
+export const useCourseStore = defineStore("course", {
   state: () => ({
     list: [] as Course[],
     currentCourse: null as Course | null,
-    isLoading: false
+    currentCourseAssignments: [] as Assignment[],
+    isLoading: false,
   }),
   actions: {
     async listAll(): Promise<void> {
-      this.isLoading = true
+      this.isLoading = true;
       try {
-        this.list = await getCourses()
+        this.list = await getCourses();
       } finally {
-        this.isLoading = false
+        this.isLoading = false;
       }
     },
 
     selectCourse(id: number): void {
-      const found = this.list.find(item => item.id === id)
-      this.currentCourse = found ?? null
-    }
-  }
-})
+      const found = this.list.find((item) => item.id === id);
+      this.currentCourse = found ?? null;
+    },
+
+    async listAllAssignmentsOfCurrentCourse(): Promise<void> {
+      try {
+        if (this.currentCourse != undefined)
+          this.currentCourseAssignments = await getAssignmentByCourseId(
+            this.currentCourse.id
+          );
+      } finally {
+      }
+    },
+  },
+});
