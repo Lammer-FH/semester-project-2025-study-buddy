@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import type { Course } from '@/types/course'
 import { getCourses } from '@/services/courseService' 
-export const useAssignmentStore = defineStore('course', {
+export const useCourseStore = defineStore('course', {
   state: () => ({
     list: [] as Course[],
     currentCourse: null as Course | null,
