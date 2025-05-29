@@ -24,15 +24,19 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/CourseListPage.vue')
       },
       {
-        path: 'tab3',
-        component: () => import('@/views/Tab3Page.vue')
+        path: 'course/:id',
+        component: ()=> import('../views/CoursePage.vue')
+      },
+      {
+        path: 'user',
+        component: () => import('@/views/UserPage.vue')
       },
       {
         path: 'info',
         component: () => import('@/views/InfoPage.vue')
       }
     ]
-  }
+  }  
 ]
 
 const router = createRouter({
