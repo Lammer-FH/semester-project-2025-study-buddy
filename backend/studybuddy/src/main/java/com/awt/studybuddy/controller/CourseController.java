@@ -1,8 +1,11 @@
 package com.awt.studybuddy.controller;
 
+import com.awt.studybuddy.dto.course.CourseRequest;
+import com.awt.studybuddy.entity.CourseEntity;
 import com.awt.studybuddy.mapper.CourseMapper;
 import com.awt.studybuddy.service.CourseService;
 import com.awt.studybuddy.service.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,4 +46,48 @@ public class CourseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
+
+    @PostMapping
+    public ResponseEntity<?> createCourse(@RequestBody CourseRequest request) {
+        try {
+            if (request.getTitle() == null || request.getTitle().isEmpty()) {
+                return new ResponseEntity<>(Map.of("error", "Course title is required."), HttpStatus.BAD_REQUEST);
+            }
+            CourseEntity course = courseMapper.toEntity(request);
+            CourseEntity created = courseService.createCourse(course);
+            return new ResponseEntity<>(courseMapper.toDto(created), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("error", "An unexpected error occurred."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody CourseRequest request) {
+        try {
+            CourseEntity course = courseMapper.toEntity(request);
+            CourseEntity updated = courseService.updateCourse(id, course);
+            return new ResponseEntity<>(courseMapper.toDto(updated), HttpStatus.OK);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.NOT_FOUND);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("error", "An unexpected error occurred."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCourse(@PathVariable Long id) {
+        try {
+            boolean deleted = courseService.deleteCourse(id);
+            if (!deleted) {
+                return new ResponseEntity<>(Map.of("error", "Course not found."), HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(Map.of("message", "Course deleted successfully."), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("error", "An unexpected error occurred."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

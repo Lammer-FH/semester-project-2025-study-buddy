@@ -1,13 +1,17 @@
 package com.awt.studybuddy.controller;
 
+import com.awt.studybuddy.dto.assignment.AssignmentRequest;
 import com.awt.studybuddy.dto.assignment.AssignmentResponse;
 import com.awt.studybuddy.entity.AssignmentEntity;
 import com.awt.studybuddy.mapper.AssignmentMapper;
 import com.awt.studybuddy.service.AssignmentService;
+import com.awt.studybuddy.service.CourseService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -16,11 +20,13 @@ import java.util.Map;
 public class CourseAssignmentController {
 
     private final AssignmentService assignmentService;
+    private final CourseService courseService;
     private final AssignmentMapper assignmentMapper;
 
-    public CourseAssignmentController(AssignmentService assignmentService, AssignmentMapper assignmentMapper) {
+    public CourseAssignmentController(AssignmentService assignmentService, AssignmentMapper assignmentMapper, CourseService courseService) {
         this.assignmentService = assignmentService;
         this.assignmentMapper = assignmentMapper;
+        this.courseService = courseService;
     }
 
     @GetMapping
@@ -30,6 +36,13 @@ public class CourseAssignmentController {
             if (!sort.equalsIgnoreCase("date")) {
                 return ResponseEntity.badRequest()
                         .body(Map.of("error", "Invalid sort parameter."));
+            }
+
+            try {
+                courseService.findById(id); // will throw if not found
+            } catch (EntityNotFoundException e) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "Course not found."));
             }
 
             List<AssignmentEntity> assignments = assignmentService.findByCourseId(id);
@@ -48,6 +61,24 @@ public class CourseAssignmentController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "An unexpected error occurred."));
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createAssignmentForCourse(@PathVariable Long id,
+                                                       @RequestBody AssignmentRequest request) {
+        try {
+            if (request.getDeadline() != null && request.getDeadline().isBefore(LocalDate.now())) {
+                return new ResponseEntity<>(Map.of("error", "Deadline must be in the future."), HttpStatus.BAD_REQUEST);
+            }
+            AssignmentEntity entity = assignmentMapper.toEntity(request);
+            AssignmentEntity created = assignmentService.createAssignment(id, entity);
+            if (created == null) {
+                return new ResponseEntity<>(Map.of("error", "Course not found."), HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(assignmentMapper.toDto(created), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("error", "An unexpected error occurred."), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
