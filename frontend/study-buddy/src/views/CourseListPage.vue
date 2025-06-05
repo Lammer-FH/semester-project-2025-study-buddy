@@ -1,38 +1,50 @@
 <template>
   <base-layout page-title="Courses">
-    <div v-if="loading">Loading Courses...</div>
-    <course-list v-else :courses="courses"></course-list>
+    <app-spinner v-if="loading" />
+    <error-message v-if="error" :message="error" @dismiss="clearError" />
+    <course-list v-else :courses="courses" />
   </base-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import CourseList from '@/components/CourseList.vue'
-import { getCourses } from '@/services/courseService'
-import {Course} from '@/types/course'
-import { useCourseStore } from '@/stores/courseStore';
+import { defineComponent } from "vue";
+import CourseList from "@/components/CourseList.vue";
+import { useCourseStore } from "@/stores/courseStore";
+import AppSpinner from "@/components/atoms/AppSpinner.vue";
+import ErrorMessage from "@/components/atoms/ErrorMessage.vue";
+import { Course } from "@/types/course";
 
 export default defineComponent({
   components: {
-    CourseList
+    CourseList,
+    AppSpinner,
+    ErrorMessage,
   },
   data() {
     return {
-      courseStore: useCourseStore()
-    }
+      courseStore: useCourseStore(),
+    };
   },
-  computed:{
-    courses(): Course[]{
+  computed: {
+    courses(): Course[] {
       return this.courseStore.list;
     },
-    loading(){
+    loading(): boolean {
       return this.courseStore.isLoading;
+    },
+    error(): string | null {
+      return this.courseStore.error;
+    },
+  },
+  methods: {
+    clearError() {
+      this.courseStore.error = null;
+    },
+  },
+  async mounted() {
+    if (this.courses.length === 0) {
+      await this.courseStore.listAll();
     }
   },
-  mounted() {
-    getCourses().then((data) => {
-      this.courseStore.listAll();
-    })
-  }
-})
+});
 </script>

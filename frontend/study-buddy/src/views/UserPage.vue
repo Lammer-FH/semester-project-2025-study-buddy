@@ -35,15 +35,15 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useUserStore } from "@/stores/userStore";
-import { IonItem, IonLabel, IonText, IonList } from '@ionic/vue';
+import { IonItem, IonLabel, IonText, IonList } from "@ionic/vue";
 
 export default defineComponent({
   name: "UserPage",
-    components: {
+  components: {
     IonItem,
     IonLabel,
     IonText,
-    IonList
+    IonList,
   },
   data() {
     return {
