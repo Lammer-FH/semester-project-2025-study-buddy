@@ -1,9 +1,11 @@
 package com.awt.studybuddy.controller;
 
+import com.awt.studybuddy.dto.assignment.AssignmentRequest;
 import com.awt.studybuddy.dto.assignment.AssignmentResponse;
 import com.awt.studybuddy.entity.AssignmentEntity;
 import com.awt.studybuddy.mapper.AssignmentMapper;
 import com.awt.studybuddy.service.AssignmentService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +47,49 @@ public class AssignmentController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "An unexpected error occurred."));
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getAssignmentById(@PathVariable Long id) {
+        try {
+            AssignmentEntity assignment = assignmentService.findById(id);
+            AssignmentResponse response = assignmentMapper.toDto(assignment);
+            return ResponseEntity.ok(response);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("error", "Assignment not found."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "An unexpected error occurred."));
+        }
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateAssignment(@PathVariable Long id, @RequestBody AssignmentRequest request) {
+        try {
+            AssignmentEntity entity = assignmentMapper.toEntity(request);
+            AssignmentEntity updated = assignmentService.updateAssignment(id, entity);
+            if (updated == null) {
+                return new ResponseEntity<>(Map.of("error", "Assignment not found."), HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(assignmentMapper.toDto(updated), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("error", "An unexpected error occurred."), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAssignment(@PathVariable Long id) {
+        try {
+            boolean deleted = assignmentService.deleteAssignment(id);
+            if (!deleted) {
+                return new ResponseEntity<>(Map.of("error", "Assignment not found."), HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(Map.of("message", "Assignment deleted successfully."), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(Map.of("error", "An unexpected error occurred."), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
