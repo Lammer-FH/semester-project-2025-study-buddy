@@ -24,7 +24,7 @@ export async function getAssignmentByCourseId(
   id: number
 ): Promise<Assignment[]> {
   try {
-    const response = await api.get<Assignment[]>("courses/{id}/assignments", {
+    const response = await api.get<Assignment[]>(`/courses/${id}/assignments`, {
       params: { sort: "date" },
     });
     return response.data;
@@ -34,9 +34,9 @@ export async function getAssignmentByCourseId(
 
     // Fallback-Daten
     return [
-      { id: 1, title: "Fallback Course Assignment 1", date: "2025-06-01" },
-      { id: 2, title: "Fallback Course Assignment 2", date: "2025-06-05" },
-      { id: 3, title: "Fallback Course Assignment 3", date: "2025-06-05" },
+      { id: 1, title: "Fallback Course Assignment 1", deadline: "2025-06-01" },
+      { id: 2, title: "Fallback Course Assignment 2", deadline: "2025-06-05" },
+      { id: 3, title: "Fallback Course Assignment 3", deadline: "2025-06-05" },
     ];
   }
 }

@@ -1,7 +1,11 @@
 <template>
-  <ion-item lines="full">
-    <div class="icon-wrapper">
-    <ion-icon :icon="getIconByTitle(title)" slot="start" />
+  <ion-item
+    :router-link="`/tabs/course/${id}`"
+    lines="full"
+    button
+  >
+    <div class="icon-wrapper" slot="start">
+      <ion-icon :icon="getIconByTitle(title)" />
     </div>
     <ion-label>
       <h2>{{ title }}</h2>
@@ -10,9 +14,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { IonItem, IonLabel, IonIcon } from '@ionic/vue'
-import { sparkles, server, rose, paw } from 'ionicons/icons'
+import { defineComponent } from 'vue';
+import { IonItem, IonLabel, IonIcon } from '@ionic/vue';
+import { sparkles, server, rose, paw } from 'ionicons/icons';
 
 export default defineComponent({
   name: 'CourseListItem',
@@ -22,24 +26,24 @@ export default defineComponent({
     IonIcon
   },
   props: {
-    id: { type: Number, required: true},
-    title: { type: String, required: true },
+    id: { type: Number, required: true },
+    title: { type: String, required: true }
   },
   data() {
-    return { iconList: [sparkles, server, rose, paw ]}
+    return {
+      iconList: [sparkles, server, rose, paw]
+    };
   },
   methods: {
-    getIconByTitle(title: String){
-        var charNumber = 0;
-        for (let i = 0; i < title.length; i++) {
-            charNumber += title.charCodeAt(i)
-        }
-       
-        return this.iconList[charNumber % this.iconList.length]
-        
+    getIconByTitle(title: string) {
+      let charNumber = 0;
+      for (let i = 0; i < title.length; i++) {
+        charNumber += title.charCodeAt(i);
+      }
+      return this.iconList[charNumber % this.iconList.length];
     }
   }
-})
+});
 </script>
 
 <style scoped>
@@ -60,12 +64,11 @@ h2 {
   height: 32px;
 }
 ion-icon {
-  color: white; /* Icon-Farbe */
+  color: white;
   font-size: 20px;
 }
 
-ion-item{
-    margin-bottom: 20px;
+ion-item {
+  margin-bottom: 12px;
 }
-
 </style>

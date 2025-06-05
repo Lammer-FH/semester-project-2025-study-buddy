@@ -2,9 +2,10 @@
  <div class="ion-padding">
         <ion-list>
           <assignment-list-item v-for="item in assignments"
+          :key="item.id"
           :id="item.id"
           :title="item.title"
-          :date="item.date"></assignment-list-item>
+          :deadline="item.deadline"></assignment-list-item>
         </ion-list>
     </div>
 </template>

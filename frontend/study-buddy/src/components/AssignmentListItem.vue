@@ -3,7 +3,7 @@
     <ion-icon :icon="getIconByTitle(title)" slot="start" />
     <ion-label>
       <h2>{{ title }}</h2>
-      <p>{{ date }}</p>
+      <p>{{ deadline }}</p>
     </ion-label>
   </ion-item>
 </template>
@@ -23,7 +23,7 @@ export default defineComponent({
   props: {
     id: { type: Number, required: true},
     title: { type: String, required: true },
-    date: { type: String, required: true },
+    deadline: { type: String, required: true },
     icon: { type: String, default: globeOutline }
   },
   data() {
