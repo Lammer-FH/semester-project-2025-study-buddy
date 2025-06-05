@@ -1,38 +1,80 @@
 <template>
-  <ion-item
-    :router-link="`/tabs/course/${id}`"
-    lines="full"
-    button
-  >
-    <div class="icon-wrapper" slot="start">
-      <ion-icon :icon="getIconByTitle(title)" />
+  <ion-item lines="full" button @click="navigateToCourse">
+    <div class="icon-wrapper">
+      <ion-icon :icon="currentIcon" slot="start" />
     </div>
     <ion-label>
       <h2>{{ title }}</h2>
     </ion-label>
+    <ion-buttons slot="end">
+      <ion-button @click.stop="handleEdit" fill="clear" class="action-button">
+        <ion-icon :icon="pencilOutline" />
+      </ion-button>
+      <ion-button
+        @click.stop="handleDelete"
+        fill="clear"
+        class="action-button"
+        color="danger"
+      >
+        <ion-icon :icon="trashOutline" />
+      </ion-button>
+    </ion-buttons>
   </ion-item>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { IonItem, IonLabel, IonIcon } from '@ionic/vue';
-import { sparkles, server, rose, paw } from 'ionicons/icons';
+import { defineComponent } from "vue";
+import { IonItem, IonLabel, IonIcon, IonButton, IonButtons } from "@ionic/vue";
+import {
+  sparkles,
+  server,
+  rose,
+  paw,
+  pencilOutline,
+  trashOutline,
+} from "ionicons/icons";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
-  name: 'CourseListItem',
+  name: "CourseListItem",
   components: {
     IonItem,
     IonLabel,
-    IonIcon
+    IonIcon,
+    IonButton,
+    IonButtons,
   },
   props: {
     id: { type: Number, required: true },
-    title: { type: String, required: true }
+    title: { type: String, required: true },
+  },
+  emits: ["edit", "delete"],
+  setup(props, { emit }) {
+    const router = useRouter();
+
+    const handleEdit = () => {
+      emit("edit", props.id);
+    };
+
+    const handleDelete = () => {
+      emit("delete", props.id);
+    };
+
+    const navigateToCourse = () => {
+      router.push(`/tabs/course/${props.id}`);
+    };
+
+    return {
+      handleEdit,
+      handleDelete,
+      navigateToCourse,
+      pencilOutline,
+      trashOutline,
+      router,
+    };
   },
   data() {
-    return {
-      iconList: [sparkles, server, rose, paw]
-    };
+    return { iconList: [sparkles, server, rose, paw] };
   },
   methods: {
     getIconByTitle(title: string) {
@@ -41,8 +83,13 @@ export default defineComponent({
         charNumber += title.charCodeAt(i);
       }
       return this.iconList[charNumber % this.iconList.length];
-    }
-  }
+    },
+  },
+  computed: {
+    currentIcon() {
+      return this.getIconByTitle(this.title);
+    },
+  },
 });
 </script>
 
@@ -63,12 +110,25 @@ h2 {
   width: 32px;
   height: 32px;
 }
-ion-icon {
+
+/* White icon for the course indicator */
+.icon-wrapper ion-icon {
   color: white;
   font-size: 20px;
 }
 
+/* Dark icons for action buttons */
+.action-button ion-icon {
+  color: var(--ion-color-dark);
+  font-size: 20px;
+}
+
+/* Danger color will override for delete button */
+.action-button[color="danger"] ion-icon {
+  color: var(--ion-color-danger);
+}
+
 ion-item {
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 </style>

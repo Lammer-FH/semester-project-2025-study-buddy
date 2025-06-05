@@ -4,39 +4,15 @@ import { Course } from "@/types/course";
 import api from "./api";
 
 export async function getCourses(): Promise<Course[]> {
-  try {
-    const response = await api.get<Course[]>("/courses");
-    return response.data;
-  } catch (error) {
-    console.warn("API /courses failed, returning fallback data.");
-    console.error(error);
-
-    // Fallback-Daten
-    return [
-      { id: 1, title: "Fallback Course 1", description: "Some Description" },
-      { id: 2, title: "Fallback Course 2", description: "Some Description" },
-      { id: 3, title: "Fallback Course 3", description: "Some Description" },
-    ];
-  }
+  const response = await api.get<Course[]>("/courses");
+  return response.data;
 }
 
 export async function getAssignmentByCourseId(
   id: number
 ): Promise<Assignment[]> {
-  try {
-    const response = await api.get<Assignment[]>(`/courses/${id}/assignments`, {
-      params: { sort: "date" },
-    });
-    return response.data;
-  } catch (error) {
-    console.warn("API /assignments failed, returning fallback data.");
-    console.error(error);
-
-    // Fallback-Daten
-    return [
-      { id: 1, title: "Fallback Course Assignment 1", deadline: "2025-06-01" },
-      { id: 2, title: "Fallback Course Assignment 2", deadline: "2025-06-05" },
-      { id: 3, title: "Fallback Course Assignment 3", deadline: "2025-06-05" },
-    ];
-  }
+  const response = await api.get<Assignment[]>(`courses/${id}/assignments`, {
+    params: { sort: "date" },
+  });
+  return response.data;
 }

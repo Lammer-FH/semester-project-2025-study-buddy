@@ -1,19 +1,24 @@
 <template>
   <base-layout page-title="Courses">
-    <div v-if="loading">Loading Courses...</div>
+    <app-spinner v-if="loading" />
+    <error-message v-if="error" :message="error" @dismiss="clearError" />
     <course-list v-else :courses="courses" />
   </base-layout>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import CourseList from '@/components/CourseList.vue';
-import { useCourseStore } from '@/stores/courseStore';
+import { defineComponent } from "vue";
+import CourseList from "@/components/CourseList.vue";
+import { useCourseStore } from "@/stores/courseStore";
+import AppSpinner from "@/components/atoms/AppSpinner.vue";
+import ErrorMessage from "@/components/atoms/ErrorMessage.vue";
+import { Course } from "@/types/course";
 
 export default defineComponent({
-  name: 'CourseListPage',
   components: {
     CourseList,
+    AppSpinner,
+    ErrorMessage,
   },
   data() {
     return {
@@ -21,15 +26,25 @@ export default defineComponent({
     };
   },
   computed: {
-    courses() {
+    courses(): Course[] {
       return this.courseStore.list;
     },
-    loading() {
+    loading(): boolean {
       return this.courseStore.isLoading;
     },
+    error(): string | null {
+      return this.courseStore.error;
+    },
   },
-  mounted() {
-    this.courseStore.listAll();
+  methods: {
+    clearError() {
+      this.courseStore.error = null;
+    },
+  },
+  async mounted() {
+    if (this.courses.length === 0) {
+      await this.courseStore.listAll();
+    }
   },
 });
 </script>

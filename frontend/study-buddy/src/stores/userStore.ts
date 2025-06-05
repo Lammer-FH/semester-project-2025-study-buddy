@@ -1,28 +1,23 @@
 import { defineStore } from "pinia";
-import api from "@/services/api";
-
+import { getUser } from "@/services/userService";
 import type { User } from "@/types/user";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
     currentUser: {} as User,
     isLoading: false,
+    error: null as string | null,
   }),
+
   actions: {
-    async getUser(id: number): Promise<void> {
+    async getUser(id: number) {
       this.isLoading = true;
+      this.error = null;
       try {
-        const response = await api.get<User>(`/users/${id}`);
-        this.currentUser = response.data;
+        this.currentUser = await getUser(id);
       } catch (error) {
-        this.currentUser = {
-          id: 1,
-          name: "FallbackUser",
-          email: "fallbacl@technikum.wien",
-          program: "MSE",
-          semester: 2,
-          studentNumber: 7216817,
-        };
+        this.error = "Failed to load user data";
+        console.error(error);
       } finally {
         this.isLoading = false;
       }

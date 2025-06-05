@@ -1,19 +1,22 @@
-import { Assignment } from "@/types/assignment";
 import { User } from "@/types/user";
 
 import api from "./api";
 
+const fallbackUser: User = {
+  id: 1,
+  name: "Eric Cartman",
+  email: "cartman@southpark.edu",
+  program: "Authoritah Studies",
+  semester: 4,
+  studentNumber: 1069666,
+};
+
 export async function getUser(id: number): Promise<User> {
   try {
-    const response = await api.get<User>(`/users/${id}/`, {
-      
-    });
+    const response = await api.get<User>(`/users/${id}`);
     return response.data;
   } catch (error) {
-    console.warn("API /assignments failed, returning fallback data.");
-    console.error(error);
-
-    // Fallback-Daten
-    return { id: 1,  name: "viki", email: "aa", program: "aa", semester: 2, studentNumber:123 };
+    console.error("Failed to fetch user, returning fallback data", error);
+    return fallbackUser;
   }
 }

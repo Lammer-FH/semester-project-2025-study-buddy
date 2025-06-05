@@ -1,28 +1,48 @@
 <template>
   <base-layout page-title="Assignments">
-    <div v-if="loading">Loading Assignments…</div>
-    <assignment-list v-else :assignments="assignments" />
+    <app-spinner v-if="loading"></app-spinner>
+    <error-message v-if="error" :message="error" @dismiss="clearError" />
+    <assignment-list v-else :assignments="assignments"></assignment-list>
   </base-layout>
 </template>
 
 <script lang="ts">
-import { useAssignmentStore } from '@/stores/assignmentStore';
+import { defineComponent } from "vue";
+import AssignmentList from "@/components/AssignmentList.vue";
+import { Assignment } from "@/types/assignment";
+import { useAssignmentStore } from "@/stores/assignmentStore";
+import AppSpinner from "@/components/atoms/AppSpinner.vue";
+import ErrorMessage from "@/components/atoms/ErrorMessage.vue";
 
-export default {
+export default defineComponent({
+  components: {
+    AssignmentList,
+    AppSpinner,
+    ErrorMessage,
+  },
   data() {
-    const assignmentStore = useAssignmentStore();
-    return { assignmentStore };
+    return {
+      assignmentStore: useAssignmentStore(),
+    };
   },
   computed: {
-    assignments() {
+    assignments(): Assignment[] {
       return this.assignmentStore.list;
     },
     loading() {
       return this.assignmentStore.isLoading;
     },
+    error(): string | null {
+      return this.assignmentStore.error;
+    },
+  },
+  methods: {
+    clearError() {
+      this.assignmentStore.error = null;
+    },
   },
   mounted() {
     this.assignmentStore.listAll();
-  }
-}
+  },
+});
 </script>

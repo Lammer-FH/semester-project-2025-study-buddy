@@ -1,32 +1,40 @@
 <template>
- <div class="ion-padding">
-        <ion-list>
-          <course-list-item v-for="item in courses"
-          :id="item.id"
-          :title="item.title">
-        </course-list-item>
-        </ion-list>
-    </div>
+  <div class="ion-padding">
+    <ion-list>
+      <course-list-item
+        v-for="item in courses"
+        :key="item.id"
+        :id="item.id"
+        :title="item.title"
+        @click="viewAssignments(item.id)"
+      >
+      </course-list-item>
+    </ion-list>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { IonList } from '@ionic/vue';
-import CourseListItem from '@/components/CourseListItem.vue';
+import { defineComponent } from "vue";
+import { IonList } from "@ionic/vue";
+import CourseListItem from "@/components/CourseListItem.vue";
 
 export default defineComponent({
-  name: 'CourseList',
+  name: "CourseList",
   components: {
     IonList,
-    CourseListItem
+    CourseListItem,
   },
-  props: 
-    ["courses"]
-  ,
+  props: ["courses"],
   data() {
-    return {
-      
-    }
-  }
-})
+    return {};
+  },
+  methods: {
+    viewAssignments(courseId: number) {
+      this.$router.push({
+        name: "CourseAssignments",
+        params: { id: courseId },
+      });
+    },
+  },
+});
 </script>
