@@ -1,8 +1,7 @@
 package com.awt.studybuddy.service;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import com.awt.studybuddy.entity.CourseEntity;
 import com.awt.studybuddy.entity.UserEntity;
@@ -20,6 +19,9 @@ import java.util.Optional;
 public class CourseServiceTests {
     @Mock
     private CourseRepository courseRepository;
+
+    @Mock
+    private UserService userService;
 
     @InjectMocks
     private CourseService courseService;
@@ -65,4 +67,85 @@ public class CourseServiceTests {
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("Course not found");
     }
+
+    @Test
+    void shouldCreateCourse() {
+        UserEntity user = new UserEntity();
+        user.setId(1L);
+
+        CourseEntity course = new CourseEntity();
+        course.setTitle("Physics");
+
+        CourseEntity saved = new CourseEntity();
+        saved.setId(42L);
+        saved.setTitle("Physics");
+
+        when(userService.getHardcodedUser()).thenReturn(user); // ✅ add this
+        when(courseRepository.save(any())).thenReturn(saved);
+
+        CourseEntity result = courseService.createCourse(course);
+
+        assertThat(result.getId()).isEqualTo(42L);
+        assertThat(result.getTitle()).isEqualTo("Physics");
+    }
+
+
+    @Test
+    void shouldUpdateCourse() {
+        Long courseId = 5L;
+
+        CourseEntity existing = new CourseEntity();
+        existing.setId(courseId);
+        existing.setTitle("Old");
+
+        CourseEntity update = new CourseEntity();
+        update.setTitle("New Title");
+        update.setDescription("New Description");
+
+        when(courseRepository.findById(courseId)).thenReturn(Optional.of(existing));
+        when(courseRepository.save(existing)).thenReturn(existing);
+
+        CourseEntity result = courseService.updateCourse(courseId, update);
+
+        assertThat(result.getTitle()).isEqualTo("New Title");
+        assertThat(result.getDescription()).isEqualTo("New Description");
+    }
+
+    @Test
+    void updateCourse_shouldThrowWhenNotFound() {
+        Long courseId = 999L;
+        CourseEntity update = new CourseEntity();
+        update.setTitle("Missing");
+
+        when(courseRepository.findById(courseId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> courseService.updateCourse(courseId, update))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage("Course not found");
+    }
+
+    @Test
+    void shouldDeleteCourseAndReturnTrue() {
+        Long id = 7L;
+
+        when(courseRepository.existsById(id)).thenReturn(true);
+
+        boolean result = courseService.deleteCourse(id);
+
+        assertThat(result).isTrue();
+        verify(courseRepository).deleteById(id);
+    }
+
+    @Test
+    void shouldNotDeleteWhenCourseMissing() {
+        Long id = 8L;
+
+        when(courseRepository.existsById(id)).thenReturn(false);
+
+        boolean result = courseService.deleteCourse(id);
+
+        assertThat(result).isFalse();
+        verify(courseRepository, never()).deleteById(id);
+    }
+
 }
