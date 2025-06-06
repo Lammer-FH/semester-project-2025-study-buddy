@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import AssignmentList from "@/components/AssignmentList.vue";
+import AssignmentList from "@/components/organisms/AssignmentList.vue";
 import { Assignment } from "@/types/assignment";
 import { useAssignmentStore } from "@/stores/assignmentStore";
 import AppSpinner from "@/components/atoms/AppSpinner.vue";

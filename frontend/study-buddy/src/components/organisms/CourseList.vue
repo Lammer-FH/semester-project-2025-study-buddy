@@ -16,7 +16,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { IonList } from "@ionic/vue";
-import CourseListItem from "@/components/CourseListItem.vue";
+import CourseListItem from "@/components/molecules/CourseListItem.vue";
 
 export default defineComponent({
   name: "CourseList",
@@ -30,10 +30,8 @@ export default defineComponent({
   },
   methods: {
     viewAssignments(courseId: number) {
-      this.$router.push({
-        name: "CourseAssignments",
-        params: { id: courseId },
-      });
+      // Use the exact path from your router configuration
+      this.$router.push(`/tabs/course/${courseId}`);
     },
   },
 });

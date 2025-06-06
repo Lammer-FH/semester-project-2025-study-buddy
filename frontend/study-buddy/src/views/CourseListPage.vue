@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import CourseList from "@/components/CourseList.vue";
+import CourseList from "@/components/organisms/CourseList.vue";
 import { useCourseStore } from "@/stores/courseStore";
 import AppSpinner from "@/components/atoms/AppSpinner.vue";
 import ErrorMessage from "@/components/atoms/ErrorMessage.vue";

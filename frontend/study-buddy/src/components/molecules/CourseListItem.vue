@@ -33,7 +33,6 @@ import {
   pencilOutline,
   trashOutline,
 } from "ionicons/icons";
-import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "CourseListItem",
@@ -48,46 +47,31 @@ export default defineComponent({
     id: { type: Number, required: true },
     title: { type: String, required: true },
   },
-  emits: ["edit", "delete"],
-  setup(props, { emit }) {
-    const router = useRouter();
-
-    const handleEdit = () => {
-      emit("edit", props.id);
-    };
-
-    const handleDelete = () => {
-      emit("delete", props.id);
-    };
-
-    const navigateToCourse = () => {
-      router.push(`/tabs/course/${props.id}`);
-    };
-
+  data() {
     return {
-      handleEdit,
-      handleDelete,
-      navigateToCourse,
+      iconList: [sparkles, server, rose, paw],
       pencilOutline,
       trashOutline,
-      router,
     };
   },
-  data() {
-    return { iconList: [sparkles, server, rose, paw] };
-  },
-  methods: {
-    getIconByTitle(title: string) {
+  computed: {
+    currentIcon() {
       let charNumber = 0;
-      for (let i = 0; i < title.length; i++) {
-        charNumber += title.charCodeAt(i);
+      for (let i = 0; i < this.title.length; i++) {
+        charNumber += this.title.charCodeAt(i);
       }
       return this.iconList[charNumber % this.iconList.length];
     },
   },
-  computed: {
-    currentIcon() {
-      return this.getIconByTitle(this.title);
+  methods: {
+    handleEdit() {
+      this.$router.push(`/tabs/course/${this.id}/edit`);
+    },
+    handleDelete() {
+      // Emit event if needed
+    },
+    navigateToCourse() {
+      this.$router.push(`/tabs/course/${this.id}`);
     },
   },
 });

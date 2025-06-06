@@ -1,6 +1,6 @@
 <template>
   <base-layout page-title="Account Information">
-    <p v-if="loading">Lade Daten ...</p>
+    <app-spinner v-if="loading"></app-spinner>
     <div v-else>
       <ion-list>
         <ion-item>
@@ -36,6 +36,7 @@
 import { defineComponent } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import { IonItem, IonLabel, IonText, IonList } from "@ionic/vue";
+import AppSpinner from "@/components/atoms/AppSpinner.vue";
 
 export default defineComponent({
   name: "UserPage",
@@ -44,6 +45,7 @@ export default defineComponent({
     IonLabel,
     IonText,
     IonList,
+    AppSpinner,
   },
   data() {
     return {
