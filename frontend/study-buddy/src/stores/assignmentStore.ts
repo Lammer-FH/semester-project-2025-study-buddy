@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import type { Assignment } from "@/types/assignment";
 import { getAssignments } from "@/services/assignmentService";
+import { PersistenceOptions } from "pinia-plugin-persistedstate";
 export const useAssignmentStore = defineStore("assignment", {
   state: () => ({
     list: [] as Assignment[],
@@ -22,8 +23,14 @@ export const useAssignmentStore = defineStore("assignment", {
     },
 
     getAssignment(id: number): void {
-      const found = this.list.find((item) => item.id === id);
+      const found = this.list.find((item: Assignment) => item.id === id);
       this.currentAssignment = found ?? null;
     },
   },
+  persist: {
+    key: "assignment-store",
+    storage: localStorage,
+    // Only persist the data, not loading/error states
+    paths: ["list", "currentAssignment"],
+  } as PersistenceOptions,
 });

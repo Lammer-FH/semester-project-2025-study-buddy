@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { IonList } from "@ionic/vue";
-import AssignmentListItem from "@/components/AssignmentListItem.vue";
+import AssignmentListItem from "@/components/molecules/AssignmentListItem.vue";
 
 export default defineComponent({
   name: "AssignmentList",
