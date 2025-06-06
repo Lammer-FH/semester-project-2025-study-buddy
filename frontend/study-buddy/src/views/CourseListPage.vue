@@ -81,21 +81,9 @@ export default defineComponent({
         this.showDialog = false;
       }
     },
-    // async handleDeleteCourse(courseId: number) {
-    //   const confirmed = confirm("Are you sure you want to delete this course?");
-    //   if (!confirmed) return;
-
-    //   try {
-    //     await this.courseStore.deleteCourse(courseId);
-    //   } catch (err) {
-    //     console.error("Error deleting course", err);
-    //   }
-    // },
   },
   async mounted() {
-    if (this.courses.length === 0) {
-      await this.courseStore.listAll();
-    }
+    await this.courseStore.listAll();
   },
 });
 </script>
