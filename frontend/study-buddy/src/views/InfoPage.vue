@@ -1,22 +1,58 @@
 <template>
   <base-layout page-title="Info">
-    <h2>Study Buddy</h2>
-    <h5>Your personal study assistent</h5>
-    <p>
-      Studdy buddy helps millions of students manage university courses, track
-      assignments, organize tasks, and meet deadlines. The app lets you create
-      and organize assignments per course and track completion.
-    </p>
+    <div class="icon-school ion-text-center">
+      <ion-icon
+        :icon="school"
+        size="large"
+        style="width: 4em; height: 4em"
+      ></ion-icon>
+    </div>
+    <ion-card class="ion-margin">
+      <ion-card-header>
+        <ion-card-title>Study Buddy</ion-card-title>
+        <ion-card-subtitle>Your personal study assistant</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p>Study Buddy helps students to:</p>
+        <ion-list lines="none">
+          <ion-item
+            ><ion-label>📚 Manage university courses</ion-label></ion-item
+          >
+          <ion-item
+            ><ion-label
+              >✅ Track assignments and completion</ion-label
+            ></ion-item
+          >
+          <ion-item
+            ><ion-label>🗂️ Organize tasks by course</ion-label></ion-item
+          >
+          <ion-item><ion-label>⏰ Stay ahead of deadlines</ion-label></ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
   </base-layout>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import BaseLayout from "@/components/template/BaseLayout.vue";
+import { IonIcon } from "@ionic/vue";
+import { school } from "ionicons/icons";
 export default defineComponent({
   name: "InfoPage",
   components: {
     BaseLayout,
+    IonIcon,
+  },
+  data() {
+    return { school };
   },
 });
 </script>
+
+<style scoped>
+.icon-school {
+  color: #000;
+}
+</style>

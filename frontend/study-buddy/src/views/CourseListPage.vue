@@ -1,5 +1,13 @@
 <template>
   <base-layout page-title="Courses">
+    <template #header-buttons>
+      <ion-buttons slot="end">
+        <ion-button @click="goToCreateCourse">
+          <ion-icon :icon="add" slot="start" />
+          Create
+        </ion-button>
+      </ion-buttons>
+    </template>
     <app-spinner v-if="loading" />
     <error-message v-if="error" :message="error" @dismiss="clearError" />
     <course-list v-else :courses="courses" />
@@ -13,6 +21,7 @@ import { useCourseStore } from "@/stores/courseStore";
 import AppSpinner from "@/components/atoms/AppSpinner.vue";
 import ErrorMessage from "@/components/atoms/ErrorMessage.vue";
 import { Course } from "@/types/course";
+import { add } from "ionicons/icons";
 
 export default defineComponent({
   components: {
@@ -23,6 +32,7 @@ export default defineComponent({
   data() {
     return {
       courseStore: useCourseStore(),
+      add,
     };
   },
   computed: {
@@ -39,6 +49,9 @@ export default defineComponent({
   methods: {
     clearError() {
       this.courseStore.error = null;
+    },
+    goToCreateCourse() {
+      this.$router.push("/tabs/course/new");
     },
   },
   async mounted() {

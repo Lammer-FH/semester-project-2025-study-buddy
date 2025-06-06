@@ -37,8 +37,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "course/new",
-        component: () => import("@/views/CourseEditPage.vue"),
-        props: { isNewCourse: true },
+        component: () => import("@/views/CourseCreatePage.vue"),
       },
       {
         path: "course/:id/edit",

@@ -7,7 +7,7 @@
 
   <ion-item>
     <ion-label position="stacked">Description</ion-label>
-    <ion-textarea v-model="localCourse.description" rows="5" />
+    <ion-textarea v-model="localCourse.description" :rows="5" />
   </ion-item>
 </template>
 
