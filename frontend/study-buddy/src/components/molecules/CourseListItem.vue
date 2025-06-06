@@ -68,7 +68,7 @@ export default defineComponent({
       this.$router.push(`/tabs/course/${this.id}/edit`);
     },
     handleDelete() {
-      // Emit event if needed
+      this.$emit("delete", this.id);
     },
     navigateToCourse() {
       this.$router.push(`/tabs/course/${this.id}`);
