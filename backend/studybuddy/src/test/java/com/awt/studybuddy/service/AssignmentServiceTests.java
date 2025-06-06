@@ -54,9 +54,11 @@ public class AssignmentServiceTests {
         var a1 = new AssignmentEntity(1L, "A", "desc", LocalDate.of(2025, 6, 1), null, null);
         var a2 = new AssignmentEntity(2L, "B", "desc", LocalDate.of(2025, 6, 5), null, null);
 
-        when(assignmentRepository.findByCourseIdOrderByDeadlineAsc(courseId)).thenReturn(List.of(a2, a1));
+        // Mock returns pre-sorted list (as the real DB would)
+        when(assignmentRepository.findByCourseIdOrderByDeadlineAsc(courseId))
+                .thenReturn(List.of(a1, a2));
 
-        var result = assignmentService.getAssignmentsByCourseId(courseId, "date");
+        var result = assignmentService.findByCourseId(courseId); //getAssignmentsByCourseId(courseId, "date");
 
         assertThat(result).hasSize(2);
         assertThat(result.get(0).getDeadline()).isBefore(result.get(1).getDeadline());

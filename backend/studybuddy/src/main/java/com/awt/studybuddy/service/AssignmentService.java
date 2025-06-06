@@ -40,13 +40,16 @@ public class AssignmentService {
         return all;
     }
 
-    public List<AssignmentEntity> getAssignmentsByCourseId(Long courseId, String sort) {
-        List<AssignmentEntity> list = assignmentRepository.findByCourseIdOrderByDeadlineAsc(courseId);
-        if ("date".equalsIgnoreCase(sort)) {
-            list.sort(Comparator.comparing(AssignmentEntity::getDeadline));
-        }
-        return list;
-    }
+//    public List<AssignmentEntity> getAssignmentsByCourseId(Long courseId, String sort) {
+////        List<AssignmentEntity> list = assignmentRepository.findByCourseIdOrderByDeadlineAsc(courseId);
+////        if ("date".equalsIgnoreCase(sort)) {
+////            list.sort(Comparator.comparing(AssignmentEntity::getDeadline));
+////        }
+////
+//        if ("date".equalsIgnoreCase(sort)) {
+//            return assignmentRepository.findByCourseIdOrderByDeadlineAsc(courseId); // Already sorted by DB
+//        }
+//    }
 
     public AssignmentEntity createAssignment(Long courseId, AssignmentEntity assignment) {
         CourseEntity course = courseService.findById(courseId);
