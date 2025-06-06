@@ -9,6 +9,7 @@
           ></ion-back-button>
         </ion-buttons>
         <ion-title>{{ pageTitle }}</ion-title>
+        <slot name="header-buttons" />
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
