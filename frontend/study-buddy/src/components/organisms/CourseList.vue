@@ -7,6 +7,7 @@
         :id="item.id"
         :title="item.title"
         @click="viewAssignments(item.id)"
+        @delete="$emit('delete', $event)"
       >
       </course-list-item>
     </ion-list>
@@ -25,6 +26,7 @@ export default defineComponent({
     CourseListItem,
   },
   props: ["courses"],
+  emits: ["delete"],
   data() {
     return {};
   },
@@ -33,6 +35,9 @@ export default defineComponent({
       // Use the exact path from your router configuration
       this.$router.push(`/tabs/course/${courseId}`);
     },
+    // handleDelete(courseId: number) {
+    //   this.$emit("delete", courseId);
+    // },
   },
 });
 </script>

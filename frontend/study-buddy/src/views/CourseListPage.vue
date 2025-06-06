@@ -10,7 +10,14 @@
     </template>
     <app-spinner v-if="loading" />
     <error-message v-if="error" :message="error" @dismiss="clearError" />
-    <course-list v-else :courses="courses" />
+    <course-list v-else :courses="courses" @delete="confirmDelete" />
+    <confirm-dialog
+      :visible="showDialog"
+      :title="`${courseTitleToDelete}`"
+      :message="`Are you sure you want to delete this course?`"
+      @confirm="deleteCourse"
+      @cancel="showDialog = false"
+    />
   </base-layout>
 </template>
 
@@ -22,17 +29,22 @@ import AppSpinner from "@/components/atoms/AppSpinner.vue";
 import ErrorMessage from "@/components/atoms/ErrorMessage.vue";
 import { Course } from "@/types/course";
 import { add } from "ionicons/icons";
+import ConfirmDialog from "@/components/atoms/ConfirmDialog.vue";
 
 export default defineComponent({
   components: {
     CourseList,
     AppSpinner,
     ErrorMessage,
+    ConfirmDialog,
   },
   data() {
     return {
       courseStore: useCourseStore(),
       add,
+      courseIdToDelete: null as number | null,
+      courseTitleToDelete: "",
+      showDialog: false,
     };
   },
   computed: {
@@ -53,6 +65,32 @@ export default defineComponent({
     goToCreateCourse() {
       this.$router.push("/tabs/course/new");
     },
+    confirmDelete(courseId: number) {
+      const course = this.courses.find((c) => c.id === courseId);
+      if (course) {
+        this.courseIdToDelete = courseId;
+        this.courseTitleToDelete = course.title;
+        this.showDialog = true;
+      }
+    },
+    async deleteCourse() {
+      if (this.courseIdToDelete !== null) {
+        await this.courseStore.deleteCourse(this.courseIdToDelete);
+        this.courseIdToDelete = null;
+        this.courseTitleToDelete = "";
+        this.showDialog = false;
+      }
+    },
+    // async handleDeleteCourse(courseId: number) {
+    //   const confirmed = confirm("Are you sure you want to delete this course?");
+    //   if (!confirmed) return;
+
+    //   try {
+    //     await this.courseStore.deleteCourse(courseId);
+    //   } catch (err) {
+    //     console.error("Error deleting course", err);
+    //   }
+    // },
   },
   async mounted() {
     if (this.courses.length === 0) {
