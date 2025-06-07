@@ -48,22 +48,24 @@ export default defineComponent({
 
 <!-- components/CourseFormFields.vue -->
 <template>
-  <ion-item :class="{ 'ion-invalid': showTitleError }">
-    <ion-label position="stacked">Title *</ion-label>
-    <ion-input v-model="localCourse.title" type="text" required />
-  </ion-item>
-  <ion-note
-    v-if="showTitleError"
-    color="danger"
-    style="padding-left: 16px; padding-top: 4px"
-  >
-    Title is required
-  </ion-note>
+  <form>
+    <ion-item :class="{ 'ion-invalid': showTitleError }">
+      <ion-label position="stacked">Title *</ion-label>
+      <ion-input v-model="localCourse.title" type="text" required />
+    </ion-item>
+    <ion-note
+      v-if="showTitleError"
+      color="danger"
+      style="padding-left: 16px; padding-top: 4px"
+    >
+      Title is required
+    </ion-note>
 
-  <ion-item>
-    <ion-label position="stacked">Description</ion-label>
-    <ion-textarea v-model="localCourse.description" :rows="5" />
-  </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Description</ion-label>
+      <ion-textarea v-model="localCourse.description" :rows="5" />
+    </ion-item>
+  </form>
 </template>
 
 <script lang="ts">

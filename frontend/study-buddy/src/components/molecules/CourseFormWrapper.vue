@@ -65,6 +65,7 @@ export default defineComponent({
     },
     buttonLabel: { type: String, default: "Submit" },
   },
+  emits: ["submit"],
   data() {
     return {
       localCourse: { ...this.initialCourse } as Course,

@@ -8,7 +8,7 @@
     </ion-label>
     <ion-buttons slot="end">
       <ion-button @click.stop="handleEdit" fill="clear" class="action-button">
-        <ion-icon :icon="pencilOutline" />
+        <ion-icon :icon="create" />
       </ion-button>
       <ion-button
         @click.stop="handleDelete"
@@ -30,7 +30,7 @@ import {
   server,
   rose,
   paw,
-  pencilOutline,
+  create,
   trashOutline,
 } from "ionicons/icons";
 
@@ -47,10 +47,11 @@ export default defineComponent({
     id: { type: Number, required: true },
     title: { type: String, required: true },
   },
+  emits: ["edit", "delete"],
   data() {
     return {
       iconList: [sparkles, server, rose, paw],
-      pencilOutline,
+      create,
       trashOutline,
     };
   },
@@ -65,7 +66,8 @@ export default defineComponent({
   },
   methods: {
     handleEdit() {
-      this.$router.push(`/tabs/course/${this.id}/edit`);
+      this.$emit("edit", this.id);
+      // this.$router.push(`/tabs/course/${this.id}/edit`);
     },
     handleDelete() {
       this.$emit("delete", this.id);

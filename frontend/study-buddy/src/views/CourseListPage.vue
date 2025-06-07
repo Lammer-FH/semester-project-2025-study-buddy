@@ -10,7 +10,13 @@
     </template>
     <app-spinner v-if="loading" />
     <error-message v-if="error" :message="error" @dismiss="clearError" />
-    <course-list v-else :courses="courses" @delete="confirmDelete" />
+    <course-list
+      v-else
+      :courses="courses"
+      @delete="confirmDelete"
+      @edit="goToEditPage"
+      @view="goToAssignment"
+    />
     <confirm-dialog
       :visible="showDialog"
       :title="`${courseTitleToDelete}`"
@@ -80,6 +86,12 @@ export default defineComponent({
         this.courseTitleToDelete = "";
         this.showDialog = false;
       }
+    },
+    goToAssignment(courseId: number) {
+      this.$router.push(`/tabs/course/${courseId}`);
+    },
+    goToEditPage(courseId) {
+      this.$router.push(`/tabs/course/${courseId}/edit`);
     },
   },
   async mounted() {
