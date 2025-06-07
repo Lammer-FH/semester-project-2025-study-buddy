@@ -77,11 +77,19 @@ export const useAssignmentStore = defineStore("assignment", {
           this.list[index] = updated;
         }
         this.currentAssignment = updated;
+        this.sortAssignmentsByDeadline();
       } catch (error) {
         this.error = error instanceof Error ? error.message : String(error);
       } finally {
         this.isLoading = false;
       }
+    },
+    sortAssignmentsByDeadline() {
+      this.list.sort((a: Assignment, b: Assignment) => {
+        const dateA = new Date(a.deadline || "").getTime();
+        const dateB = new Date(b.deadline || "").getTime();
+        return dateA - dateB;
+      });
     },
 
     async remove(id: number): Promise<void> {

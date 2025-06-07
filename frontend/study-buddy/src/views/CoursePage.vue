@@ -40,6 +40,8 @@ import { useAssignmentStore } from "@/stores/assignmentStore";
 import AppSpinner from "@/components/atoms/AppSpinner.vue";
 import ConfirmDialog from "@/components/atoms/ConfirmDialog.vue";
 import { add } from "ionicons/icons";
+import { Assignment } from "@/types/assignment";
+import { IonButton, IonButtons, IonIcon } from "@ionic/vue";
 
 export default defineComponent({
   name: "CoursePage",
@@ -47,6 +49,9 @@ export default defineComponent({
     AssignmentList,
     AppSpinner,
     ConfirmDialog,
+    IonButtons,
+    IonButton,
+    IonIcon,
   },
   data() {
     return {
@@ -77,14 +82,20 @@ export default defineComponent({
   },
   watch: {
     "$route.params.id"() {
-      this.loadCourseData();
+      // Only load course data if we're actually on a course page
+      if (
+        this.$route.name === "CoursePage" ||
+        this.$route.path.startsWith("/tabs/course/")
+      ) {
+        this.loadCourseData();
+      }
     },
   },
   methods: {
     async loadCourseData() {
       const id = this.getValidCourseId();
       if (id === null) {
-        this.router.replace("/tabs/course-list");
+        this.$router.replace("/tabs/course-list");
         return;
       }
 
@@ -108,7 +119,9 @@ export default defineComponent({
       });
     },
     confirmDelete(assignmentId: number) {
-      const assignment = this.assignments.find((a) => a.id === assignmentId);
+      const assignment = this.assignments.find(
+        (a: Assignment) => a.id === assignmentId
+      );
       if (assignment) {
         this.assignmentIdToDelete = assignmentId;
         this.assignmentTitleToDelete = assignment.title;
@@ -117,7 +130,7 @@ export default defineComponent({
     },
     async deleteAssignment() {
       if (this.assignmentIdToDelete !== null) {
-        await this.assignmentStore.deleteAssignment(this.assignmentIdToDelete);
+        await this.assignmentStore.remove(this.assignmentIdToDelete);
         // Refresh the assignments for this course
         await this.courseStore.listAllAssignmentsOfCurrentCourse();
         this.assignmentIdToDelete = null;

@@ -59,13 +59,5 @@ export default defineComponent({
   },
   props: ["assignments"],
   emits: ["edit", "delete"],
-  // methods: {
-  //   handleEdit(assignmentId: number) {
-  //     this.$emit("edit", assignmentId);
-  //   },
-  //   handleDelete(assignmentId: number) {
-  //     this.$emit("delete", assignmentId);
-  //   },
-  // },
 });
 </script>

@@ -105,14 +105,25 @@ export const useCourseStore = defineStore("course", {
     },
 
     // Set the current course by ID
-    selectCourse(id: number): void {
-      const found = this.list.find((course: Course) => course.id === id);
-      this.currentCourse = found ?? null;
-      if (!found) {
-        console.warn(`Course with ID ${id} not found in loaded courses`);
+    // In your courseStore.ts, update the selectCourse method:
+
+    async selectCourse(id: number) {
+      // If courses are empty, load them first
+      if (this.list.length === 0) {
+        console.log("Courses not loaded, loading first...");
+        await this.listAll();
+      }
+
+      const course = this.list.find((c: Course) => c.id === id);
+      if (course) {
+        this.currentCourse = course;
+        console.log("Course selected:", course);
+      } else {
+        console.error(`Course with ID ${id} not found in loaded courses`);
+        // Don't throw error, just log it
+        this.currentCourse = null;
       }
     },
-
     // Fetch assignments for the currently selected course
     async listAllAssignmentsOfCurrentCourse(): Promise<void> {
       if (!this.currentCourse) {

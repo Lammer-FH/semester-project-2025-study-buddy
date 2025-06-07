@@ -36,6 +36,7 @@ import ErrorMessage from "@/components/atoms/ErrorMessage.vue";
 import { Course } from "@/types/course";
 import { add } from "ionicons/icons";
 import ConfirmDialog from "@/components/atoms/ConfirmDialog.vue";
+import { IonButton, IonButtons, IonIcon } from "@ionic/vue";
 
 export default defineComponent({
   components: {
@@ -43,6 +44,9 @@ export default defineComponent({
     AppSpinner,
     ErrorMessage,
     ConfirmDialog,
+    IonButton,
+    IonButtons,
+    IonIcon,
   },
   data() {
     return {
@@ -90,7 +94,7 @@ export default defineComponent({
     goToAssignment(courseId: number) {
       this.$router.push(`/tabs/course/${courseId}`);
     },
-    goToEditPage(courseId) {
+    goToEditPage(courseId: number) {
       this.$router.push(`/tabs/course/${courseId}/edit`);
     },
   },
