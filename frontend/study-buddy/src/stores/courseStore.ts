@@ -29,6 +29,7 @@ export const useCourseStore = defineStore("course", {
       try {
         this.list = await getCourses();
       } catch (error) {
+        this.list = [];
         this.error = error instanceof Error ? error.message : String(error);
         console.error("Error loading courses", error);
       } finally {
