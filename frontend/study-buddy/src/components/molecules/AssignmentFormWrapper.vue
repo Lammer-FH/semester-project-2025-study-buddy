@@ -16,10 +16,11 @@
 import { defineComponent } from "vue";
 import AssignmentFormFields from "@/components/molecules/AssignmentFormFields.vue";
 import type { Assignment } from "@/types/assignment";
+import { IonButton } from "@ionic/vue";
 
 export default defineComponent({
   name: "AssignmentFormWrapper",
-  components: { AssignmentFormFields },
+  components: { AssignmentFormFields, IonButton },
   props: {
     initialAssignment: {
       type: Object as () => Partial<Assignment>,

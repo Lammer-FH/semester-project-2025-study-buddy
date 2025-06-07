@@ -26,6 +26,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: "course/:id",
+        name: "CoursePage",
         component: () => import("../views/CoursePage.vue"),
       },
       {

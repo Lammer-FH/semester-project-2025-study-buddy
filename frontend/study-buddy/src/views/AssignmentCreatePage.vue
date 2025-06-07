@@ -40,11 +40,14 @@ export default defineComponent({
   methods: {
     async handleCreate(assignmentInput: Partial<Assignment>) {
       const store = useAssignmentStore();
+      if (this.courseId === null) {
+        throw new Error("Missing courseId");
+      }
       await store.create(
         this.courseId,
         assignmentInput as Omit<Assignment, "id">
       );
-      this.$router.push(`/tabs/course/${this.courseId}`);
+      this.$router.replace(`/tabs/course/${this.courseId}`);
     },
   },
 });
