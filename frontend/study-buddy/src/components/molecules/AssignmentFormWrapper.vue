@@ -2,7 +2,6 @@
   <div v-if="localAssignment">
     <assignment-form-fields
       :assignment="localAssignment"
-      :courses="courses"
       :validate-fields="hasTriedSubmit"
       @update:assignment="updateLocal"
       @validation-change="handleValidationChange"
