@@ -102,7 +102,10 @@ export default defineComponent({
       this.$router.push(`/tabs/assignment/new?courseId=${this.courseId}`);
     },
     handleEdit(assignmentId: number) {
-      this.$router.push(`/tabs/assignment/${assignmentId}/edit`);
+      this.$router.push({
+        path: `/tabs/assignment/${assignmentId}/edit`,
+        query: { from: `/tabs/course/${this.courseId}` },
+      });
     },
     confirmDelete(assignmentId: number) {
       const assignment = this.assignments.find((a) => a.id === assignmentId);

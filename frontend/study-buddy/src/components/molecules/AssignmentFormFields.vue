@@ -84,7 +84,7 @@ export default {
   emits: ["update:assignment", "validation-change"],
   data() {
     return {
-      localAssignment: { ...this.assignment },
+      localAssignment: {} as Assignment,
       today: new Date().toISOString().split("T")[0], // YYYY-MM-DD
       modalOpen: false,
     };
@@ -104,6 +104,18 @@ export default {
     },
   },
   watch: {
+    assignment: {
+      immediate: true,
+      deep: true,
+      handler(newVal: Assignment) {
+        this.localAssignment = {
+          ...newVal,
+          deadline: newVal.deadline
+            ? new Date(newVal.deadline).toISOString().split("T")[0]
+            : new Date().toISOString().split("T")[0],
+        };
+      },
+    },
     localAssignment: {
       handler(newValue) {
         this.$emit("update:assignment", { ...newValue });

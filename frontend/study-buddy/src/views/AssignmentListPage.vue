@@ -76,9 +76,8 @@ export default defineComponent({
     goToEditPage(assignmentId) {
       this.$router.push({
         path: `/tabs/assignment/${assignmentId}/edit`,
-        query: { from: this.$route.fullPath },
+        query: { from: "/tabs/assignment-list" },
       });
-      // this.$router.push(`/tabs/assignment/${assignmentId}/edit`);
     },
   },
   mounted() {
