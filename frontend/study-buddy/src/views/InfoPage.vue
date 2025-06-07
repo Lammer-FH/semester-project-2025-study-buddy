@@ -37,13 +37,25 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import BaseLayout from "@/components/template/BaseLayout.vue";
-import { IonIcon } from "@ionic/vue";
+import {
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonIcon,
+  IonItem,
+  IonList,
+} from "@ionic/vue";
 import { school } from "ionicons/icons";
 export default defineComponent({
   name: "InfoPage",
   components: {
     BaseLayout,
     IonIcon,
+    IonItem,
+    IonCardContent,
+    IonList,
+    IonCard,
+    IonCardHeader,
   },
   data() {
     return { school };
