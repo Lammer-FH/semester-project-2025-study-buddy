@@ -33,15 +33,21 @@ export default defineComponent({
       return parseInt(Array.isArray(idParam) ? idParam[0] : idParam);
     },
   },
-  async created() {
-    const store = useCourseStore();
-    if (!store.list.length) {
-      await store.listAll();
-    }
-    store.selectCourse(this.courseId);
-    this.course = store.currentCourse ? { ...store.currentCourse } : null;
-  },
+  async created() {},
   methods: {
+    async loadData() {
+      const store = useCourseStore();
+      if (!store.list.length) {
+        await store.listAll();
+      }
+      store.selectCourse(this.courseId);
+      this.course = store.currentCourse ? { ...store.currentCourse } : null;
+    },
+    async ionViewWillEnter() {
+      console.log("ionViewWillEnter fired ✅");
+      this.course = null;
+      await this.loadData();
+    },
     async handleUpdate(updatedCourse: Course) {
       const store = useCourseStore();
       await store.updateCourse(updatedCourse);
