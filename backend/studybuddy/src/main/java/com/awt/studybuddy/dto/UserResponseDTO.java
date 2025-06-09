@@ -1,9 +1,9 @@
-package com.awt.studybuddy.dto.user;
+package com.awt.studybuddy.dto;
 
 import lombok.Data;
 
 @Data
-public class UserResponse {
+public class UserResponseDTO {
     private Long id;
     private String name;
     private String email;

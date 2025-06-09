@@ -1,6 +1,6 @@
 package com.awt.studybuddy.controller;
 
-import com.awt.studybuddy.dto.course.CourseRequest;
+import com.awt.studybuddy.dto.CourseRequestDTO;
 import com.awt.studybuddy.entity.CourseEntity;
 import com.awt.studybuddy.mapper.CourseMapper;
 import com.awt.studybuddy.service.CourseService;
@@ -48,7 +48,7 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCourse(@RequestBody CourseRequest request) {
+    public ResponseEntity<?> createCourse(@RequestBody CourseRequestDTO request) {
         try {
             if (request.getTitle() == null || request.getTitle().isEmpty()) {
                 return new ResponseEntity<>(Map.of("error", "Course title is required."), HttpStatus.BAD_REQUEST);
@@ -62,7 +62,7 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody CourseRequest request) {
+    public ResponseEntity<?> updateCourse(@PathVariable Long id, @RequestBody CourseRequestDTO request) {
         try {
             CourseEntity course = courseMapper.toEntity(request);
             CourseEntity updated = courseService.updateCourse(id, course);

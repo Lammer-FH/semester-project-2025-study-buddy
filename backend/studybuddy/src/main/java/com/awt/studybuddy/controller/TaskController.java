@@ -1,7 +1,7 @@
 package com.awt.studybuddy.controller;
 
-import com.awt.studybuddy.dto.task.TaskRequest;
-import com.awt.studybuddy.dto.task.TaskResponse;
+import com.awt.studybuddy.dto.TaskRequestDTO;
+import com.awt.studybuddy.dto.TaskResponseDTO;
 import com.awt.studybuddy.entity.TaskEntity;
 import com.awt.studybuddy.mapper.TaskMapper;
 import com.awt.studybuddy.service.TaskService;
@@ -32,7 +32,7 @@ public class TaskController {
             if (tasks.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of("message", "Tasks not found."));
             }
-            List<TaskResponse> response = tasks.stream().map(taskMapper::toDto).collect(Collectors.toList());
+            List<TaskResponseDTO> response = tasks.stream().map(taskMapper::toDto).collect(Collectors.toList());
             return ResponseEntity.ok(response);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Assignment not found."));
@@ -42,7 +42,7 @@ public class TaskController {
     }
 
     @PostMapping("/assignments/{id}/tasks")
-    public ResponseEntity<?> addTask(@PathVariable Long id, @RequestBody TaskRequest request) {
+    public ResponseEntity<?> addTask(@PathVariable Long id, @RequestBody TaskRequestDTO request) {
         try {
             TaskEntity entity = taskMapper.toEntity(request);
             TaskEntity saved = taskService.addTaskToAssignment(id, entity);
@@ -55,7 +55,7 @@ public class TaskController {
     }
 
     @PutMapping("/tasks/{id}")
-    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody TaskRequest request) {
+    public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody TaskRequestDTO request) {
         try {
             TaskEntity entity = taskMapper.toEntity(request);
             TaskEntity updated = taskService.updateTask(id, entity);

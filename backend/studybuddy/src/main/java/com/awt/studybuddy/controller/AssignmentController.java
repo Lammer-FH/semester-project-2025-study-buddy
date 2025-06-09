@@ -1,7 +1,7 @@
 package com.awt.studybuddy.controller;
 
-import com.awt.studybuddy.dto.assignment.AssignmentRequest;
-import com.awt.studybuddy.dto.assignment.AssignmentResponse;
+import com.awt.studybuddy.dto.AssignmentRequestDTO;
+import com.awt.studybuddy.dto.AssignmentResponseDTO;
 import com.awt.studybuddy.entity.AssignmentEntity;
 import com.awt.studybuddy.mapper.AssignmentMapper;
 import com.awt.studybuddy.service.AssignmentService;
@@ -38,7 +38,7 @@ public class AssignmentController {
                         .body(Map.of("message", "No assignments found."));
             }
 
-            List<AssignmentResponse> responseList = assignments.stream()
+            List<AssignmentResponseDTO> responseList = assignments.stream()
                     .map(assignmentMapper::toDto)
                     .toList();
 
@@ -54,7 +54,7 @@ public class AssignmentController {
     public ResponseEntity<?> getAssignmentById(@PathVariable Long id) {
         try {
             AssignmentEntity assignment = assignmentService.findById(id);
-            AssignmentResponse response = assignmentMapper.toDto(assignment);
+            AssignmentResponseDTO response = assignmentMapper.toDto(assignment);
             return ResponseEntity.ok(response);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -67,7 +67,7 @@ public class AssignmentController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateAssignment(@PathVariable Long id, @RequestBody AssignmentRequest request) {
+    public ResponseEntity<?> updateAssignment(@PathVariable Long id, @RequestBody AssignmentRequestDTO request) {
         try {
             AssignmentEntity entity = assignmentMapper.toEntity(request);
             AssignmentEntity updated = assignmentService.updateAssignment(id, entity);

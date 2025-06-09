@@ -1,7 +1,7 @@
 package com.awt.studybuddy.controller;
 
-import com.awt.studybuddy.dto.assignment.AssignmentRequest;
-import com.awt.studybuddy.dto.assignment.AssignmentResponse;
+import com.awt.studybuddy.dto.AssignmentRequestDTO;
+import com.awt.studybuddy.dto.AssignmentResponseDTO;
 import com.awt.studybuddy.entity.AssignmentEntity;
 import com.awt.studybuddy.mapper.AssignmentMapper;
 import com.awt.studybuddy.service.AssignmentService;
@@ -50,7 +50,7 @@ public class AssignmentControllerTests {
         entity.setTitle("Test Assignment");
         entity.setDeadline(LocalDate.of(2025, 5, 1));
 
-        AssignmentResponse dto = new AssignmentResponse();
+        AssignmentResponseDTO dto = new AssignmentResponseDTO();
         dto.setTitle("Test Assignment");
         dto.setDeadline(LocalDate.of(2025, 5, 1));
 
@@ -62,7 +62,7 @@ public class AssignmentControllerTests {
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
         assertThat(response.getBody()).isNotNull();
         @SuppressWarnings("unchecked")
-        List<AssignmentResponse> body = (List<AssignmentResponse>) response.getBody();
+        List<AssignmentResponseDTO> body = (List<AssignmentResponseDTO>) response.getBody();
 
         assertThat(body.get(0).getTitle()).isEqualTo("Test Assignment");    }
 
@@ -93,13 +93,13 @@ public class AssignmentControllerTests {
     @Test
     void createAssignmentForCourse_returnsCreated() {
         Long courseId = 1L;
-        AssignmentRequest request = new AssignmentRequest();
+        AssignmentRequestDTO request = new AssignmentRequestDTO();
         request.setTitle("Write report");
         request.setDeadline(LocalDate.of(2025, 10, 5));
 
         AssignmentEntity entity = new AssignmentEntity();
         AssignmentEntity saved = new AssignmentEntity();
-        AssignmentResponse dto = new AssignmentResponse();
+        AssignmentResponseDTO dto = new AssignmentResponseDTO();
         dto.setTitle("Write report");
 
         when(assignmentMapper.toEntity(request)).thenReturn(entity);
@@ -112,7 +112,7 @@ public class AssignmentControllerTests {
 
     @Test
     void createAssignmentForCourse_returnsBadRequestForPastDeadline() {
-        AssignmentRequest request = new AssignmentRequest();
+        AssignmentRequestDTO request = new AssignmentRequestDTO();
         request.setDeadline(LocalDate.now().minusDays(1));
 
         ResponseEntity<?> response = courseAssignmentController.createAssignmentForCourse(1L, request);
@@ -121,7 +121,7 @@ public class AssignmentControllerTests {
 
     @Test
     void createAssignmentForCourse_returnsNotFoundIfCourseMissing() {
-        AssignmentRequest request = new AssignmentRequest();
+        AssignmentRequestDTO request = new AssignmentRequestDTO();
         request.setTitle("Task X");
         request.setDeadline(LocalDate.now().plusDays(1));
 

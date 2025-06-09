@@ -1,6 +1,6 @@
 package com.awt.studybuddy.controller;
 
-import com.awt.studybuddy.dto.user.UserResponse;
+import com.awt.studybuddy.dto.UserResponseDTO;
 import com.awt.studybuddy.entity.UserEntity;
 import com.awt.studybuddy.mapper.UserMapper;
 import com.awt.studybuddy.service.UserService;
@@ -22,12 +22,12 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         UserEntity user = userService.getById(id);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        UserResponse response = userMapper.toDto(user);
+        UserResponseDTO response = userMapper.toDto(user);
         return ResponseEntity.ok(response);
     }
 }

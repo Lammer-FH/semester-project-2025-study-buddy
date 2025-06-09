@@ -1,7 +1,7 @@
 package com.awt.studybuddy.controller;
 
-import com.awt.studybuddy.dto.course.CourseRequest;
-import com.awt.studybuddy.dto.course.CourseResponse;
+import com.awt.studybuddy.dto.CourseRequestDTO;
+import com.awt.studybuddy.dto.CourseResponseDTO;
 import com.awt.studybuddy.entity.CourseEntity;
 import com.awt.studybuddy.entity.UserEntity;
 import com.awt.studybuddy.mapper.CourseMapper;
@@ -50,7 +50,7 @@ public class CourseControllerTests {
         CourseEntity course = new CourseEntity();
         course.setTitle("Math");
 
-        CourseResponse response = new CourseResponse();
+        CourseResponseDTO response = new CourseResponseDTO();
         response.setTitle("Math");
 
         when(userService.getHardcodedUser()).thenReturn(user);
@@ -61,7 +61,7 @@ public class CourseControllerTests {
 
         assertThat(result.getStatusCodeValue()).isEqualTo(200);
 
-        List<CourseResponse> body = (List<CourseResponse>) result.getBody();
+        List<CourseResponseDTO> body = (List<CourseResponseDTO>) result.getBody();
         assertThat(body).hasSize(1);
         assertThat(body.get(0).getTitle()).isEqualTo("Math");
     }
@@ -81,14 +81,14 @@ public class CourseControllerTests {
 
     @Test
     void createCourse_returnsCreated() {
-        CourseRequest request = new CourseRequest();
+        CourseRequestDTO request = new CourseRequestDTO();
         request.setTitle("New Course");
 
         CourseEntity entity = new CourseEntity();
         CourseEntity saved = new CourseEntity();
         saved.setId(10L);
 
-        CourseResponse response = new CourseResponse();
+        CourseResponseDTO response = new CourseResponseDTO();
         response.setId(10L);
         response.setTitle("New Course");
 
@@ -99,13 +99,13 @@ public class CourseControllerTests {
         ResponseEntity<?> result = controller.createCourse(request);
 
         assertThat(result.getStatusCodeValue()).isEqualTo(201);
-        CourseResponse body = (CourseResponse) result.getBody();
+        CourseResponseDTO body = (CourseResponseDTO) result.getBody();
         assertThat(body.getId()).isEqualTo(10L);
     }
 
     @Test
     void createCourse_returnsBadRequest_whenMissingTitle() {
-        CourseRequest request = new CourseRequest();
+        CourseRequestDTO request = new CourseRequestDTO();
         request.setTitle(""); // invalid
 
         ResponseEntity<?> result = controller.createCourse(request);
@@ -117,14 +117,14 @@ public class CourseControllerTests {
 
     @Test
     void updateCourse_returnsOk_whenSuccessful() {
-        CourseRequest request = new CourseRequest();
+        CourseRequestDTO request = new CourseRequestDTO();
         request.setTitle("Updated Course");
 
         CourseEntity updated = new CourseEntity();
         updated.setId(1L);
         updated.setTitle("Updated Course");
 
-        CourseResponse response = new CourseResponse();
+        CourseResponseDTO response = new CourseResponseDTO();
         response.setId(1L);
         response.setTitle("Updated Course");
 
@@ -134,12 +134,12 @@ public class CourseControllerTests {
 
         ResponseEntity<?> result = controller.updateCourse(1L, request);
         assertThat(result.getStatusCodeValue()).isEqualTo(200);
-        assertThat(((CourseResponse) result.getBody()).getTitle()).isEqualTo("Updated Course");
+        assertThat(((CourseResponseDTO) result.getBody()).getTitle()).isEqualTo("Updated Course");
     }
 
     @Test
     void updateCourse_returnsNotFound_whenMissing() {
-        CourseRequest request = new CourseRequest();
+        CourseRequestDTO request = new CourseRequestDTO();
         request.setTitle("Nonexistent");
 
         when(courseMapper.toEntity(request)).thenReturn(new CourseEntity());
