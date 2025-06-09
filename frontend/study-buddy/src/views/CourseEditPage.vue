@@ -47,11 +47,11 @@ export default defineComponent({
         ? { ...this.store.currentCourse }
         : null;
     },
-    async ionViewDidLeave() {
-      console.log("ionViewWillEnter fired ✅");
-      this.course = null;
-      // await this.loadData();
-    },
+    // async ionViewDidLeave() {
+    //   console.log("ionViewWillEnter fired ✅");
+    //   this.course = null;
+    //   // await this.loadData();
+    // },
     async handleUpdate(updatedCourse: Course) {
       console.log("trying to update course to", updatedCourse.title);
       await this.store.updateCourse(updatedCourse);

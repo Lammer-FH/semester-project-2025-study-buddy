@@ -45,15 +45,13 @@ export default defineComponent({
     handleValidationChange(isValid: boolean) {
       this.isFormValid = isValid;
       console.log("form is valid: ", isValid);
-      this.$emit("validation-change", isValid);
+      // this.$emit("validation-change", isValid);
     },
     submit() {
       this.hasTriedSubmit = true;
       console.log("course submit");
-      if (this.isFormValid) {
-        console.log("course submit again");
-        this.$emit("submit", { ...this.localCourse });
-      }
+      console.log("course submit again");
+      this.$emit("submit", { ...this.localCourse });
     },
   },
 });
