@@ -1,13 +1,18 @@
 <template>
   <ion-item lines="full" button @click="navigateToAssignment">
-    <ion-icon :icon="getIconByTitle(title)" slot="start" />
+    <ion-icon
+      :icon="documentText"
+      fill="outline"
+      color="primary"
+      slot="start"
+    />
     <ion-label>
       <h2>{{ title }}</h2>
       <p>{{ deadline }}</p>
     </ion-label>
     <ion-buttons slot="end">
       <ion-button @click.stop="handleEdit" fill="clear" class="action-button">
-        <ion-icon :icon="create" />
+        <ion-icon :icon="create" fill="outline" color="primary" />
       </ion-button>
       <ion-button
         @click.stop="handleDelete"
@@ -25,10 +30,11 @@
 import { defineComponent } from "vue";
 import { IonItem, IonLabel, IonIcon, IonButton, IonButtons } from "@ionic/vue";
 import {
-  globeOutline,
-  eyedropOutline,
-  hardwareChipOutline,
-  fitnessOutline,
+  // globeOutline,
+  // eyedropOutline,
+  // hardwareChipOutline,
+  // fitnessOutline,
+  documentText,
   create,
   trashOutline,
 } from "ionicons/icons";
@@ -46,30 +52,31 @@ export default defineComponent({
     id: { type: Number, required: true },
     title: { type: String, required: true },
     deadline: { type: String, required: true },
-    icon: { type: String, default: globeOutline },
+    // icon: { type: String, default: documentText },
   },
-  emits: ["edit", "delete"],
+  emits: ["edit", "delete", "view-assignment"],
   data() {
     return {
-      iconList: [
-        globeOutline,
-        eyedropOutline,
-        hardwareChipOutline,
-        fitnessOutline,
-      ],
+      // iconList: [
+      //   globeOutline,
+      //   eyedropOutline,
+      //   hardwareChipOutline,
+      //   fitnessOutline,
+      // ],
+      documentText,
       create,
       trashOutline,
     };
   },
   methods: {
-    getIconByTitle(title: string) {
-      let charNumber = 0;
-      for (let i = 0; i < title.length; i++) {
-        charNumber += title.charCodeAt(i);
-      }
+    // getIconByTitle(title: string) {
+    //   let charNumber = 0;
+    //   for (let i = 0; i < title.length; i++) {
+    //     charNumber += title.charCodeAt(i);
+    //   }
 
-      return this.iconList[charNumber % this.iconList.length];
-    },
+    //   return this.iconList[charNumber % this.iconList.length];
+    // },
     handleEdit() {
       this.$emit("edit", this.id);
     },

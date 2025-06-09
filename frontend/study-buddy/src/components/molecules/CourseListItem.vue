@@ -8,7 +8,7 @@
     </ion-label>
     <ion-buttons slot="end">
       <ion-button @click.stop="handleEdit" fill="clear" class="action-button">
-        <ion-icon :icon="create" />
+        <ion-icon :icon="create" fill="outline" color="primary" />
       </ion-button>
       <ion-button
         @click.stop="handleDelete"

@@ -41,6 +41,7 @@ export default defineComponent({
         :deadline="item.deadline"
         @delete="$emit('delete', $event)"
         @edit="$emit('edit', $event)"
+        @view-assignment="$emit('view-assignment', $event)"
       ></assignment-list-item>
     </ion-list>
   </div>
@@ -58,6 +59,6 @@ export default defineComponent({
     AssignmentListItem,
   },
   props: ["assignments"],
-  emits: ["edit", "delete"],
+  emits: ["edit", "delete", "view-assignment"],
 });
 </script>

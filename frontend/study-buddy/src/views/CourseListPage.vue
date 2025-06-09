@@ -2,7 +2,11 @@
   <base-layout page-title="Courses">
     <template #header-buttons>
       <ion-buttons slot="end">
-        <ion-button @view-course="goToCreateCourse">
+        <ion-button
+          fill="outline"
+          color="primary"
+          @view-course="goToCreateCourse"
+        >
           <ion-icon :icon="add" slot="start" />
           Create
         </ion-button>

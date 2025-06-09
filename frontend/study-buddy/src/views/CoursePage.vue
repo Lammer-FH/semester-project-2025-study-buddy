@@ -6,7 +6,11 @@
   >
     <template #header-buttons>
       <ion-buttons slot="end">
-        <ion-button @click="goToCreateAssignment">
+        <ion-button
+          fill="outline"
+          color="primary"
+          @click="goToCreateAssignment"
+        >
           <ion-icon :icon="add" slot="start" />
           Add Assignment
         </ion-button>
@@ -48,6 +52,7 @@
           :assignments="assignments"
           @edit="handleEdit"
           @delete="confirmDelete"
+          @view-assignment="goToAssignmentPage"
           class="assignment-list"
         />
         <div v-else-if="!loading" class="empty-state">
@@ -157,6 +162,12 @@ export default defineComponent({
     handleEdit(assignmentId: number) {
       this.$router.push({
         path: `/tabs/assignment/${assignmentId}/edit`,
+        query: { from: `/tabs/course/${this.courseId}` },
+      });
+    },
+    goToAssignmentPage(assignmentId: number) {
+      this.$router.push({
+        path: `/tabs/assignment/${assignmentId}/tasks`,
         query: { from: `/tabs/course/${this.courseId}` },
       });
     },

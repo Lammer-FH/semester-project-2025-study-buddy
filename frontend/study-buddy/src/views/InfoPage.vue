@@ -3,6 +3,8 @@
     <div class="icon-school ion-text-center">
       <ion-icon
         :icon="school"
+        fill="outline"
+        color="primary"
         size="large"
         style="width: 4em; height: 4em"
       ></ion-icon>

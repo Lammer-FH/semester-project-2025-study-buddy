@@ -91,6 +91,25 @@ export const useAssignmentStore = defineStore("assignment", {
         return dateA - dateB;
       });
     },
+    async selectAssignment(id: number) {
+      // If courses are empty, load them first
+      if (this.list.length === 0) {
+        console.log("Assignments not loaded, loading first...");
+        await this.listAll();
+      }
+
+      const assignment = this.list.find((c: Assignment) => c.id === id);
+      if (assignment) {
+        this.currentAssignment = assignment;
+        console.log("Assignment selected:", assignment);
+      } else {
+        console.error(
+          `Assignment with ID ${id} not found in loaded assignments`
+        );
+        // Don't throw error, just log it
+        this.currentCourse = null;
+      }
+    },
 
     async remove(id: number): Promise<void> {
       this.isLoading = true;

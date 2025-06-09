@@ -7,6 +7,7 @@
       :assignments="assignments"
       @delete="confirmDelete"
       @edit="goToEditPage"
+      @view-assignment="goToAssignmentPage"
     ></assignment-list>
     <confirm-dialog
       :visible="showDialog"
@@ -76,6 +77,12 @@ export default defineComponent({
     goToEditPage(assignmentId: number) {
       this.$router.push({
         path: `/tabs/assignment/${assignmentId}/edit`,
+        query: { from: "/tabs/assignment-list" },
+      });
+    },
+    goToAssignmentPage(assignmentId: number) {
+      this.$router.push({
+        path: `/tabs/assignment/${assignmentId}/tasks`,
         query: { from: "/tabs/assignment-list" },
       });
     },
