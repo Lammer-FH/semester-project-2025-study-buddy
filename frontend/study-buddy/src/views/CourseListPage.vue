@@ -2,7 +2,7 @@
   <base-layout page-title="Courses">
     <template #header-buttons>
       <ion-buttons slot="end">
-        <ion-button @click="goToCreateCourse">
+        <ion-button @view-course="goToCreateCourse">
           <ion-icon :icon="add" slot="start" />
           Create
         </ion-button>
@@ -15,7 +15,7 @@
       :courses="courses"
       @delete="confirmDelete"
       @edit="goToEditPage"
-      @view="goToAssignment"
+      @view-course="goToAssignment"
     />
     <confirm-dialog
       :visible="showDialog"

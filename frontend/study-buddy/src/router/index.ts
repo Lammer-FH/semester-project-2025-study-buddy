@@ -53,6 +53,10 @@ const routes: Array<RouteRecordRaw> = [
         path: "assignment/:id/edit",
         component: () => import("@/views/AssignmentEditPage.vue"),
       },
+      {
+        path: "assignment/:id/tasks",
+        component: () => import("@/views/AssignmentPage.vue"),
+      },
     ],
   },
 ];

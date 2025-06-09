@@ -1,5 +1,5 @@
 <template>
-  <ion-item lines="full">
+  <ion-item lines="full" button @click="navigateToAssignment">
     <ion-icon :icon="getIconByTitle(title)" slot="start" />
     <ion-label>
       <h2>{{ title }}</h2>
@@ -75,6 +75,9 @@ export default defineComponent({
     },
     handleDelete() {
       this.$emit("delete", this.id);
+    },
+    navigateToAssignment() {
+      this.$emit("view-assignment", this.id);
     },
   },
 });
