@@ -1,7 +1,7 @@
 package com.awt.studybuddy.controller;
 
-import com.awt.studybuddy.dto.task.TaskRequest;
-import com.awt.studybuddy.dto.task.TaskResponse;
+import com.awt.studybuddy.dto.TaskRequestDTO;
+import com.awt.studybuddy.dto.TaskResponseDTO;
 import com.awt.studybuddy.entity.TaskEntity;
 import com.awt.studybuddy.mapper.TaskMapper;
 import com.awt.studybuddy.service.TaskService;
@@ -40,7 +40,7 @@ public class TaskControllerTests {
         TaskEntity task = new TaskEntity();
         task.setDescription("Read papers");
 
-        TaskResponse dto = new TaskResponse();
+        TaskResponseDTO dto = new TaskResponseDTO();
         dto.setDescription("Read papers");
 
         when(taskService.getTasksByAssignmentId(1L)).thenReturn(List.of(task));
@@ -49,7 +49,7 @@ public class TaskControllerTests {
         ResponseEntity<?> response = taskController.getTasks(1L);
 
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
-        List<TaskResponse> body = (List<TaskResponse>) response.getBody();
+        List<TaskResponseDTO> body = (List<TaskResponseDTO>) response.getBody();
         assertThat(body).hasSize(1);
         assertThat(body.get(0).getDescription()).isEqualTo("Read papers");
     }
@@ -64,12 +64,12 @@ public class TaskControllerTests {
 
     @Test
     void addTask_success() {
-        TaskRequest request = new TaskRequest();
+        TaskRequestDTO request = new TaskRequestDTO();
         request.setDescription("New task");
 
         TaskEntity entity = new TaskEntity();
         TaskEntity saved = new TaskEntity();
-        TaskResponse dto = new TaskResponse();
+        TaskResponseDTO dto = new TaskResponseDTO();
         dto.setDescription("New task");
 
         when(taskMapper.toEntity(request)).thenReturn(entity);
@@ -79,17 +79,17 @@ public class TaskControllerTests {
         ResponseEntity<?> response = taskController.addTask(1L, request);
 
         assertThat(response.getStatusCodeValue()).isEqualTo(201);
-        assertThat(((TaskResponse) response.getBody()).getDescription()).isEqualTo("New task");
+        assertThat(((TaskResponseDTO) response.getBody()).getDescription()).isEqualTo("New task");
     }
 
     @Test
     void updateTask_success() {
-        TaskRequest request = new TaskRequest();
+        TaskRequestDTO request = new TaskRequestDTO();
         request.setDescription("Updated");
 
         TaskEntity entity = new TaskEntity();
         TaskEntity updated = new TaskEntity();
-        TaskResponse dto = new TaskResponse();
+        TaskResponseDTO dto = new TaskResponseDTO();
         dto.setDescription("Updated");
 
         when(taskMapper.toEntity(request)).thenReturn(entity);
@@ -99,7 +99,7 @@ public class TaskControllerTests {
         ResponseEntity<?> response = taskController.updateTask(1L, request);
 
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
-        assertThat(((TaskResponse) response.getBody()).getDescription()).isEqualTo("Updated");
+        assertThat(((TaskResponseDTO) response.getBody()).getDescription()).isEqualTo("Updated");
     }
 
     @Test

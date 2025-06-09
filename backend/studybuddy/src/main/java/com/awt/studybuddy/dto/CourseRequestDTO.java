@@ -1,9 +1,9 @@
-package com.awt.studybuddy.dto.course;
+package com.awt.studybuddy.dto;
 
 import lombok.Data;
 
 @Data
-public class CourseRequest {
+public class CourseRequestDTO {
     private String title;
     private String description;
 }

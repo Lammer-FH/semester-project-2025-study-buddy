@@ -1,7 +1,7 @@
 package com.awt.studybuddy.controller;
 
-import com.awt.studybuddy.dto.assignment.AssignmentRequest;
-import com.awt.studybuddy.dto.assignment.AssignmentResponse;
+import com.awt.studybuddy.dto.AssignmentRequestDTO;
+import com.awt.studybuddy.dto.AssignmentResponseDTO;
 import com.awt.studybuddy.entity.AssignmentEntity;
 import com.awt.studybuddy.mapper.AssignmentMapper;
 import com.awt.studybuddy.service.AssignmentService;
@@ -52,7 +52,7 @@ public class CourseAssignmentController {
                         .body(Map.of("message", "No assignments found."));
             }
 
-            List<AssignmentResponse> responseList = assignments.stream()
+            List<AssignmentResponseDTO> responseList = assignments.stream()
                     .map(assignmentMapper::toDto)
                     .toList();
 
@@ -66,7 +66,7 @@ public class CourseAssignmentController {
 
     @PostMapping
     public ResponseEntity<?> createAssignmentForCourse(@PathVariable Long id,
-                                                       @RequestBody AssignmentRequest request) {
+                                                       @RequestBody AssignmentRequestDTO request) {
         try {
             if (request.getDeadline() != null && request.getDeadline().isBefore(LocalDate.now())) {
                 return new ResponseEntity<>(Map.of("error", "Deadline must be in the future."), HttpStatus.BAD_REQUEST);
