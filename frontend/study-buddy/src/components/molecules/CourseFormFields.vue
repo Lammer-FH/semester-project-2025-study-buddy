@@ -63,12 +63,13 @@ export default defineComponent({
   watch: {
     localCourse: {
       handler(newValue) {
+        console.log("updted coures");
         this.$emit("update:course", { ...newValue });
-        this.$emit("validation-change", this.isValid);
       },
       deep: true,
     },
     isValid(newValue) {
+      console.log("course is valid");
       this.$emit("validation-change", newValue);
     },
   },

@@ -29,15 +29,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { IonItem, IonLabel, IonIcon, IonButton, IonButtons } from "@ionic/vue";
-import {
-  // globeOutline,
-  // eyedropOutline,
-  // hardwareChipOutline,
-  // fitnessOutline,
-  documentText,
-  create,
-  trashOutline,
-} from "ionicons/icons";
+import { documentText, create, trashOutline } from "ionicons/icons";
 
 export default defineComponent({
   name: "AssignmentListItem",
@@ -52,31 +44,16 @@ export default defineComponent({
     id: { type: Number, required: true },
     title: { type: String, required: true },
     deadline: { type: String, required: true },
-    // icon: { type: String, default: documentText },
   },
   emits: ["edit", "delete", "view-assignment"],
   data() {
     return {
-      // iconList: [
-      //   globeOutline,
-      //   eyedropOutline,
-      //   hardwareChipOutline,
-      //   fitnessOutline,
-      // ],
       documentText,
       create,
       trashOutline,
     };
   },
   methods: {
-    // getIconByTitle(title: string) {
-    //   let charNumber = 0;
-    //   for (let i = 0; i < title.length; i++) {
-    //     charNumber += title.charCodeAt(i);
-    //   }
-
-    //   return this.iconList[charNumber % this.iconList.length];
-    // },
     handleEdit() {
       this.$emit("edit", this.id);
     },

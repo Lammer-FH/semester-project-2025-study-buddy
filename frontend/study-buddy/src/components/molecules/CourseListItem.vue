@@ -25,15 +25,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { IonItem, IonLabel, IonIcon, IonButton, IonButtons } from "@ionic/vue";
-import {
-  // sparkles,
-  // server,
-  // rose,
-  // paw,
-  library,
-  create,
-  trashOutline,
-} from "ionicons/icons";
+import { library, create, trashOutline } from "ionicons/icons";
 
 export default defineComponent({
   name: "CourseListItem",
@@ -51,32 +43,20 @@ export default defineComponent({
   emits: ["edit", "delete", "view-course"],
   data() {
     return {
-      // iconList: [sparkles, server, rose, paw],
       library,
       create,
       trashOutline,
     };
   },
-  // computed: {
-  //   currentIcon() {
-  //     let charNumber = 0;
-  //     for (let i = 0; i < this.title.length; i++) {
-  //       charNumber += this.title.charCodeAt(i);
-  //     }
-  //     return this.iconList[charNumber % this.iconList.length];
-  //   },
-  // },
   methods: {
     handleEdit() {
       this.$emit("edit", this.id);
-      // this.$router.push(`/tabs/course/${this.id}/edit`);
     },
     handleDelete() {
       this.$emit("delete", this.id);
     },
     navigateToCourse() {
       this.$emit("view-course", this.id);
-      // this.$router.push(`/tabs/course/${this.id}`);
     },
   },
 });

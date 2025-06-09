@@ -58,14 +58,6 @@
         </div>
       </div>
     </div>
-
-    <confirm-dialog
-      :visible="showDialog"
-      :title="`${taskDescriptionToDelete}`"
-      :message="`Are you sure you want to delete this task?`"
-      @confirm="handleDeleteTask"
-      @cancel="showDialog = false"
-    />
   </base-layout>
 </template>
 <script lang="ts">
@@ -73,19 +65,15 @@ import { defineComponent } from "vue";
 import { useAssignmentStore } from "@/stores/assignmentStore";
 import { useTaskStore } from "@/stores/taskStore";
 import AppSpinner from "@/components/atoms/AppSpinner.vue";
-import ConfirmDialog from "@/components/atoms/ConfirmDialog.vue";
 import TaskList from "@/components/organisms/TaskList.vue";
-import type { Task } from "@/types/task";
 import { listOutline, terminalOutline, add } from "ionicons/icons";
 import { IonButton, IonButtons, IonIcon } from "@ionic/vue";
 
-// import { Assignment } from "@/types/assignment";
 export default defineComponent({
   name: "AssignmentPage",
   components: {
     TaskList,
     AppSpinner,
-    ConfirmDialog,
     IonButton,
     IonButtons,
     IonIcon,
@@ -110,9 +98,6 @@ export default defineComponent({
     loading() {
       return this.taskStore.isLoading;
     },
-    assignmentTitle() {
-      return this.assignmentStore.currentAssignment.title;
-    },
     assignmentId(): number {
       return Number(this.$route.params.id);
     },
@@ -136,7 +121,8 @@ export default defineComponent({
         this.$router.replace("/tabs/assignment-list");
         return;
       }
-      await this.assignmentStore.selectAssignment(id);
+      // await this.assignmentStore.selectAssignment(id);
+      this.assignmentStore.getAssignment(id);
       if (this.assignmentStore.currentAssignment) {
         console.log(
           "Set current assignmment to ",
@@ -149,39 +135,11 @@ export default defineComponent({
       const id = Number(this.$route.params.id);
       return isNaN(id) ? null : id;
     },
-    async listAllTasksOfCurrentAssignment(): Promise<void> {
-      if (!this.assignmentStore.currentAssignment) {
-        console.warn("No assignment selected.");
-        return;
-      }
-
-      // this.isLoading = true;
-      // this.error = null;
-      try {
-        this.tasks = await this.taskStore.fetchByAssignmentId(
-          this.assignmentStore.currentAssignment.id
-        );
-      } catch (error) {
-        this.error = error instanceof Error ? error.message : String(error);
-        console.error("Failed to fetch course assignments", error);
-        this.tasks = [];
-      } finally {
-        this.taskStore.isLoading = false;
-      }
-    },
     handleEdit() {
       console.log("Editing task");
     },
-    handleDeleteTask() {
-      console.log("deleting task");
-    },
     confirmDelete(taskId: number) {
-      const task = this.tasks.find((a: Task) => a.id === taskId);
-      if (task) {
-        this.taskIdToDelete = taskId;
-        this.taskIdToDelete = task.description;
-        this.showDialog = true;
-      }
+      console.log("deleting task", taskId);
     },
     goToCreateTask() {
       console.log("go to create task");

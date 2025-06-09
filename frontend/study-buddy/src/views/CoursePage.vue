@@ -112,13 +112,13 @@ export default defineComponent({
   },
   computed: {
     assignments() {
-      return this.courseStore.currentCourseAssignments;
+      return this.assignmentStore.list;
     },
     courseTitle() {
       return this.courseStore.currentCourse?.title ?? "Course";
     },
     loading() {
-      return this.courseStore.isAssignmentListLoading;
+      return this.assignmentStore.isLoading;
     },
     courseId(): number {
       return Number(this.$route.params.id);
@@ -146,9 +146,11 @@ export default defineComponent({
         return;
       }
 
-      await this.courseStore.selectCourse(id);
-      if (this.courseStore.currentCourse) {
-        await this.courseStore.listAllAssignmentsOfCurrentCourse();
+      await this.courseStore.getCourse(id);
+      if (this.courseStore.currentCourseId) {
+        await this.assignmentStore.fetchAllAssignmentByCourseId(
+          this.courseStore.currentCourseId
+        );
       }
     },
     getValidCourseId(): number | null {
@@ -159,13 +161,15 @@ export default defineComponent({
       // Navigate to create assignment with pre-selected course
       this.$router.push(`/tabs/assignment/new?courseId=${this.courseId}`);
     },
-    handleEdit(assignmentId: number) {
+    async handleEdit(assignmentId: number) {
+      await this.assignmentStore.selectAssignment(assignmentId);
       this.$router.push({
         path: `/tabs/assignment/${assignmentId}/edit`,
         query: { from: `/tabs/course/${this.courseId}` },
       });
     },
-    goToAssignmentPage(assignmentId: number) {
+    async goToAssignmentPage(assignmentId: number) {
+      await this.assignmentStore.selectAssignment(assignmentId);
       this.$router.push({
         path: `/tabs/assignment/${assignmentId}/tasks`,
         query: { from: `/tabs/course/${this.courseId}` },
@@ -184,12 +188,22 @@ export default defineComponent({
     async deleteAssignment() {
       if (this.assignmentIdToDelete !== null) {
         await this.assignmentStore.remove(this.assignmentIdToDelete);
-        // Refresh the assignments for this course
-        await this.courseStore.listAllAssignmentsOfCurrentCourse();
-        this.assignmentIdToDelete = null;
-        this.assignmentTitleToDelete = "";
-        this.showDialog = false;
+        if (this.courseId) {
+          console.log("Fetching assignments after assignment delete");
+          await this.assignmentStore.fetchAllAssignmentByCourseId(
+            this.courseId
+          );
+        } else {
+          console.log("Course id missing after assignment delete");
+        }
       }
+    },
+    ionViewWillLeave() {
+      this.courseStore.clearData();
+      this.assignmentStore.clearData();
+    },
+    async ionViewWillEnter() {
+      await this.loadCourseData();
     },
   },
 });

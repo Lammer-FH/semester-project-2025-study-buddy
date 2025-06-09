@@ -11,6 +11,7 @@ import type { PersistenceOptions } from "pinia-plugin-persistedstate";
 export const useTaskStore = defineStore("task", {
   state: () => ({
     list: [] as Task[],
+    currentTaskId: null as number | null,
     currentTask: null as Task | null,
     isLoading: false,
     error: null as string | null,
@@ -24,6 +25,7 @@ export const useTaskStore = defineStore("task", {
         this.list = await getTasksByAssignmentId(assignmentId);
       } catch (error) {
         this.error = error instanceof Error ? error.message : String(error);
+        this.list = [];
       } finally {
         this.isLoading = false;
       }
@@ -39,6 +41,7 @@ export const useTaskStore = defineStore("task", {
         const created = await addTaskToAssignment(assignmentId, newTask);
         this.list.push(created);
         this.currentTask = created;
+        this.currentTaskId = created.id;
       } catch (error) {
         this.error = error instanceof Error ? error.message : String(error);
       } finally {
@@ -56,6 +59,7 @@ export const useTaskStore = defineStore("task", {
           this.list[index] = updated;
         }
         this.currentTask = updated;
+        this.currentTaskId = updated.id;
       } catch (error) {
         this.error = error instanceof Error ? error.message : String(error);
       } finally {
@@ -70,14 +74,15 @@ export const useTaskStore = defineStore("task", {
 
     async selectTask(id: number) {
       if (this.list.length === 0) {
-        console.log("Tasks not loaded, cannot select");
+        console.log("Tasks not loaded.");
         this.currentTask = null;
         return;
       }
 
-      const task = this.list.find((t: Task) => t.id === id);
+      const task: Task = this.list.find((t: Task) => t.id === id);
       if (task) {
         this.currentTask = task;
+        this.currentTaskId = task.id;
       } else {
         console.error(`Task with ID ${id} not found in loaded tasks`);
         this.currentTask = null;
@@ -92,6 +97,7 @@ export const useTaskStore = defineStore("task", {
         this.list = this.list.filter((t: Task) => t.id !== id);
         if (this.currentTask?.id === id) {
           this.currentTask = null;
+          this.currentTaskId = null;
         }
       } catch (error) {
         this.error = error instanceof Error ? error.message : String(error);
@@ -104,6 +110,6 @@ export const useTaskStore = defineStore("task", {
   persist: {
     key: "task-store",
     storage: localStorage,
-    paths: ["list", "currentTask"],
+    paths: ["list", "currentTask", "currentTaskId"],
   } as PersistenceOptions,
 });

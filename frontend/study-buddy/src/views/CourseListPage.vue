@@ -2,11 +2,7 @@
   <base-layout page-title="Courses">
     <template #header-buttons>
       <ion-buttons slot="end">
-        <ion-button
-          fill="outline"
-          color="primary"
-          @view-course="goToCreateCourse"
-        >
+        <ion-button fill="outline" color="primary" @click="goToCreateCourse">
           <ion-icon :icon="add" slot="start" />
           Create
         </ion-button>
@@ -95,10 +91,12 @@ export default defineComponent({
         this.showDialog = false;
       }
     },
-    goToAssignment(courseId: number) {
+    async goToAssignment(courseId: number) {
+      await this.courseStore.selectCourse(courseId);
       this.$router.push(`/tabs/course/${courseId}`);
     },
-    goToEditPage(courseId: number) {
+    async goToEditPage(courseId: number) {
+      await this.courseStore.selectCourse(courseId);
       this.$router.push(`/tabs/course/${courseId}/edit`);
     },
   },

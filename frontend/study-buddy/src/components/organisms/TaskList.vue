@@ -19,15 +19,9 @@ export default {
   methods: {
     handleTaskUpdate(updatedTask) {
       this.$emit("update-task", updatedTask);
-      //   // Update in your store or array
-      //   const index = this.tasks.findIndex((t) => t.id === updatedTask.id);
-      //   if (index !== -1) {
-      //     this.tasks.splice(index, 1, updatedTask);
-      //   }
     },
     handleTaskDelete(taskId) {
       this.$emit("delete-task", taskId);
-      //   this.tasks = this.tasks.filter((t) => t.id !== taskId);
     },
   },
 };

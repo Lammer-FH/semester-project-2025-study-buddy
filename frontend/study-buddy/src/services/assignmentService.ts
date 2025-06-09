@@ -9,23 +9,21 @@ export async function getAssignments(): Promise<Assignment[]> {
   return response.data;
 }
 
-// // Get assignments for a specific course
-// export async function getAssignmentsByCourse(
-//   courseId: number
-// ): Promise<Assignment[]> {
-//   const response = await api.get<Assignment[]>(
-//     `/courses/${courseId}/assignments`,
-//     {
-//       params: { sort: "date" },
-//     }
-//   );
-
-//   if (response.status === 204) {
-//     return []; // No assignments
-//   }
-
-//   return response.data;
-// }
+// Get assignments for a specific course
+export async function getAssignmentsByCourse(
+  courseId: number
+): Promise<Assignment[]> {
+  const response = await api.get<Assignment[]>(
+    `/courses/${courseId}/assignments`,
+    {
+      params: { sort: "date" },
+    }
+  );
+  if (response.status === 204) {
+    return []; // No assignments
+  }
+  return response.data;
+}
 
 // Get a single assignment by its ID
 export async function getAssignmentById(id: number): Promise<Assignment> {
