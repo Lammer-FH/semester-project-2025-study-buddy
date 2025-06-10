@@ -1,13 +1,18 @@
 <template>
-  <ion-item lines="full">
-    <ion-icon :icon="getIconByTitle(title)" slot="start" />
+  <ion-item lines="full" button @click="navigateToAssignment">
+    <ion-icon
+      :icon="documentText"
+      fill="outline"
+      color="primary"
+      slot="start"
+    />
     <ion-label>
       <h2>{{ title }}</h2>
       <p>{{ deadline }}</p>
     </ion-label>
     <ion-buttons slot="end">
       <ion-button @click.stop="handleEdit" fill="clear" class="action-button">
-        <ion-icon :icon="create" />
+        <ion-icon :icon="create" fill="outline" color="primary" />
       </ion-button>
       <ion-button
         @click.stop="handleDelete"
@@ -24,14 +29,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { IonItem, IonLabel, IonIcon, IonButton, IonButtons } from "@ionic/vue";
-import {
-  globeOutline,
-  eyedropOutline,
-  hardwareChipOutline,
-  fitnessOutline,
-  create,
-  trashOutline,
-} from "ionicons/icons";
+import { documentText, create, trashOutline } from "ionicons/icons";
 
 export default defineComponent({
   name: "AssignmentListItem",
@@ -46,35 +44,24 @@ export default defineComponent({
     id: { type: Number, required: true },
     title: { type: String, required: true },
     deadline: { type: String, required: true },
-    icon: { type: String, default: globeOutline },
   },
-  emits: ["edit", "delete"],
+  emits: ["edit", "delete", "view-assignment"],
   data() {
     return {
-      iconList: [
-        globeOutline,
-        eyedropOutline,
-        hardwareChipOutline,
-        fitnessOutline,
-      ],
+      documentText,
       create,
       trashOutline,
     };
   },
   methods: {
-    getIconByTitle(title: string) {
-      let charNumber = 0;
-      for (let i = 0; i < title.length; i++) {
-        charNumber += title.charCodeAt(i);
-      }
-
-      return this.iconList[charNumber % this.iconList.length];
-    },
     handleEdit() {
       this.$emit("edit", this.id);
     },
     handleDelete() {
       this.$emit("delete", this.id);
+    },
+    navigateToAssignment() {
+      this.$emit("view-assignment", this.id);
     },
   },
 });

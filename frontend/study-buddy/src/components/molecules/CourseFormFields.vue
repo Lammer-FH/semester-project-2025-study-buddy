@@ -46,7 +46,7 @@ export default defineComponent({
   emits: ["update:course", "validation-change"],
   data() {
     return {
-      localCourse: { ...this.course },
+      localCourse: this.course,
     };
   },
   computed: {
@@ -62,15 +62,21 @@ export default defineComponent({
   },
   watch: {
     localCourse: {
-      handler(newValue) {
-        this.$emit("update:course", { ...newValue });
-        this.$emit("validation-change", this.isValid);
+      handler() {
+        console.log(
+          "updted coures",
+          !!(this.localCourse.title && this.localCourse.title.trim())
+        );
+        if (this.localCourse.title && this.localCourse.title.trim()) {
+          this.$emit("update:course", this.localCourse);
+        }
       },
       deep: true,
     },
-    isValid(newValue) {
-      this.$emit("validation-change", newValue);
-    },
+    // isValid(newValue) {
+    //   console.log("course is valid");
+    //   this.$emit("validation-change", newValue);
+    // },
   },
 });
 </script>

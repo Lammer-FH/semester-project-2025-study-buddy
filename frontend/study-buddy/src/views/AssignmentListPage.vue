@@ -7,6 +7,7 @@
       :assignments="assignments"
       @delete="confirmDelete"
       @edit="goToEditPage"
+      @view-assignment="goToAssignmentPage"
     ></assignment-list>
     <confirm-dialog
       :visible="showDialog"
@@ -58,10 +59,11 @@ export default defineComponent({
       this.assignmentStore.error = null;
     },
     confirmDelete(assignmentId: number) {
-      const assignment = this.assignments.find((a) => a.id === assignmentId);
-      if (assignment) {
+      this.assignmentStore.getAssignment(assignmentId);
+      if (this.assignmentStore.currentAssignment) {
         this.assignmentIdToDelete = assignmentId;
-        this.assignmentTitleToDelete = assignment.title;
+        this.assignmentTitleToDelete =
+          this.assignmentStore.currentAssignment.title;
         this.showDialog = true;
       }
     },
@@ -74,11 +76,22 @@ export default defineComponent({
       }
     },
     goToEditPage(assignmentId: number) {
+      this.assignmentStore.selectAssignment(assignmentId);
       this.$router.push({
         path: `/tabs/assignment/${assignmentId}/edit`,
         query: { from: "/tabs/assignment-list" },
       });
     },
+    goToAssignmentPage(assignmentId: number) {
+      this.assignmentStore.selectAssignment(assignmentId);
+      this.$router.push({
+        path: `/tabs/assignment/${assignmentId}/tasks`,
+        query: { from: "/tabs/assignment-list" },
+      });
+    },
+  },
+  ionViewWillEnter() {
+    this.assignmentStore.listAll();
   },
   mounted() {
     this.assignmentStore.listAll();

@@ -28,7 +28,7 @@ export default defineComponent({
     },
     buttonLabel: { type: String, default: "Submit" },
   },
-  emits: ["submit"],
+  emits: ["submit", "form-change", "validation-change"],
   data() {
     return {
       localCourse: { ...this.initialCourse } as Course,
@@ -39,16 +39,19 @@ export default defineComponent({
   methods: {
     updateLocal(updated: Course) {
       this.localCourse = updated;
+      console.log("updated local");
+      this.$emit("form-change", updated);
     },
     handleValidationChange(isValid: boolean) {
       this.isFormValid = isValid;
+      console.log("form is valid: ", isValid);
+      // this.$emit("validation-change", isValid);
     },
     submit() {
       this.hasTriedSubmit = true;
-
-      if (this.isFormValid) {
-        this.$emit("submit", { ...this.localCourse });
-      }
+      console.log("course submit");
+      console.log("course submit again");
+      this.$emit("submit", { ...this.localCourse });
     },
   },
 });

@@ -3,6 +3,8 @@
     <div class="icon-school ion-text-center">
       <ion-icon
         :icon="school"
+        fill="outline"
+        color="primary"
         size="large"
         style="width: 4em; height: 4em"
       ></ion-icon>
@@ -38,12 +40,15 @@
 import { defineComponent } from "vue";
 import BaseLayout from "@/components/template/BaseLayout.vue";
 import {
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
   IonIcon,
   IonItem,
+  IonCardContent,
   IonList,
+  IonCard,
+  IonCardHeader,
+  IonLabel,
+  IonCardTitle,
+  IonCardSubtitle,
 } from "@ionic/vue";
 import { school } from "ionicons/icons";
 export default defineComponent({
@@ -56,6 +61,9 @@ export default defineComponent({
     IonList,
     IonCard,
     IonCardHeader,
+    IonLabel,
+    IonCardTitle,
+    IonCardSubtitle,
   },
   data() {
     return { school };

@@ -6,7 +6,7 @@
         :key="item.id"
         :id="item.id"
         :title="item.title"
-        @click="viewAssignments(item.id)"
+        @view-course="viewAssignments(item.id)"
         @delete="$emit('delete', $event)"
         @edit="$emit('edit', $event)"
       >
@@ -27,13 +27,13 @@ export default defineComponent({
     CourseListItem,
   },
   props: ["courses"],
-  emits: ["delete", "edit", "view"],
+  emits: ["delete", "edit", "view-course"],
   data() {
     return {};
   },
   methods: {
     viewAssignments(courseId: number) {
-      this.$emit("view", courseId);
+      this.$emit("view-course", courseId);
     },
   },
 });

@@ -25,32 +25,36 @@ export default defineComponent({
   data() {
     return {
       course: null as Course | null,
+      store: useCourseStore(),
     };
   },
   computed: {
     courseId(): number {
-      const idParam = this.$route.params.id;
-      return parseInt(Array.isArray(idParam) ? idParam[0] : idParam);
+      return Number(this.$route.params.id);
     },
   },
-  async created() {},
+  async created() {
+    this.loadData();
+  },
   methods: {
     async loadData() {
-      const store = useCourseStore();
-      if (!store.list.length) {
-        await store.listAll();
+      if (!this.store.list.length) {
+        await this.store.listAll();
       }
-      store.selectCourse(this.courseId);
-      this.course = store.currentCourse ? { ...store.currentCourse } : null;
+      // this.store.selectCourse(this.courseId);
+      await this.store.getCourse(this.courseId);
+      this.course = this.store.currentCourse
+        ? { ...this.store.currentCourse }
+        : null;
     },
-    async ionViewWillEnter() {
-      console.log("ionViewWillEnter fired ✅");
-      this.course = null;
-      await this.loadData();
-    },
+    // async ionViewDidLeave() {
+    //   console.log("ionViewWillEnter fired ✅");
+    //   this.course = null;
+    //   // await this.loadData();
+    // },
     async handleUpdate(updatedCourse: Course) {
-      const store = useCourseStore();
-      await store.updateCourse(updatedCourse);
+      console.log("trying to update course to", updatedCourse.title);
+      await this.store.updateCourse(updatedCourse);
       this.$router.push("/tabs/course-list");
     },
   },

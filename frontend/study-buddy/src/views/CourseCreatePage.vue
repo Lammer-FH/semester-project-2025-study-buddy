@@ -25,12 +25,12 @@ export default defineComponent({
   data() {
     return {
       emptyCourse: { title: "", description: "" } as Partial<Course>,
+      store: useCourseStore(),
     };
   },
   methods: {
     async handleCreate(courseInput: Partial<Course>) {
-      const store = useCourseStore();
-      await store.createCourse(courseInput as Omit<Course, "id">);
+      await this.store.createCourse(courseInput as Omit<Course, "id">);
       this.$router.push("/tabs/course-list");
     },
   },
