@@ -65,7 +65,7 @@
       :is-open="isAddTaskModalOpen"
       @didDismiss="closeAddTaskModal"
     >
-      <ion-content>
+      <ion-header>
         <ion-toolbar>
           <ion-title>Add New Task</ion-title>
           <ion-buttons slot="end">
@@ -74,44 +74,53 @@
             </ion-button>
           </ion-buttons>
         </ion-toolbar>
+      </ion-header>
 
-        <div class="modal-content">
-          <ion-item class="task-input-item">
-            <ion-label position="stacked">Task Description</ion-label>
-            <ion-textarea
-              v-model="newTask.description"
-              placeholder="Enter task description..."
-              :rows="1"
-              :maxlength="500"
-              fill="outline"
-              class="task-textarea"
-            ></ion-textarea>
-          </ion-item>
-          <ion-item>
-            <ion-button
-              expand="block"
-              color="primary"
-              @click="createTask"
-              :disabled="!newTask.description.trim()"
-              class="create-button"
-              slot="end"
-            >
-              <ion-icon :icon="checkmarkOutline" slot="start" />
-              Create Task
-            </ion-button>
-            <ion-button
-              expand="block"
-              fill="clear"
-              color="medium"
-              @click="closeAddTaskModal"
-              class="cancel-button"
-              slot="start"
-            >
-              Cancel
-            </ion-button>
-          </ion-item>
-        </div>
+      <ion-content class="ion-padding">
+        <ion-item class="task-input-item">
+          <ion-label position="stacked">Task Description</ion-label>
+          <ion-textarea
+            v-model="newTask.description"
+            placeholder="Enter task description..."
+            :rows="1"
+            :maxlength="500"
+            fill="outline"
+            class="task-textarea"
+          ></ion-textarea>
+        </ion-item>
       </ion-content>
+
+      <ion-footer>
+        <ion-toolbar>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-button
+                  expand="block"
+                  fill="outline"
+                  color="primary"
+                  @click="closeAddTaskModal"
+                  class="cancel-button"
+                >
+                  Cancel
+                </ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button
+                  expand="block"
+                  color="primary"
+                  @click="createTask"
+                  :disabled="!newTask.description.trim()"
+                  class="create-button"
+                >
+                  <ion-icon :icon="checkmarkOutline" slot="start" />
+                  Create Task
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-toolbar>
+      </ion-footer>
     </ion-modal>
   </base-layout>
 </template>
@@ -140,6 +149,11 @@ import {
   IonItem,
   IonLabel,
   IonTextarea,
+  IonCol,
+  IonRow,
+  IonGrid,
+  IonHeader,
+  IonFooter,
 } from "@ionic/vue";
 import { Task } from "@/types/task";
 
@@ -158,6 +172,11 @@ export default defineComponent({
     IonItem,
     IonLabel,
     IonTextarea,
+    IonCol,
+    IonRow,
+    IonGrid,
+    IonHeader,
+    IonFooter,
   },
   data() {
     return {
@@ -232,8 +251,9 @@ export default defineComponent({
 
       // awai this.taskStore.update(this.)
     },
-    confirmDelete(taskId: number) {
+    async confirmDelete(taskId: number) {
       console.log("deleting task", taskId);
+      await this.taskStore.remove(taskId);
     },
     openAddTaskModal() {
       this.isAddTaskModalOpen = true;
@@ -273,6 +293,10 @@ export default defineComponent({
 </script>
 
 <style scoped>
+ion-footer ion-toolbar {
+  --background: white !important;
+  background: white !important;
+}
 .assignment-icon {
   margin-right: 12px;
   font-size: 1.2em;
@@ -457,6 +481,9 @@ ion-modal::part(backdrop) {
 ion-modal ion-toolbar {
   --background: var(--ion-color-primary);
   --color: white;
+}
+ion-footer {
+  --background: var(--ion-color-primary-contrast);
 }
 
 .modal-content {
