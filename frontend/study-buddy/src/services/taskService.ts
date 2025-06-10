@@ -25,6 +25,9 @@ export async function updateTask(
   taskId: number,
   task: Omit<Task, "id">
 ): Promise<Task> {
+  const baseURL = api.defaults.baseURL;
+  console.log("sending request to ", baseURL);
+  console.log("updating task with id ", taskId, task);
   const response = await api.put<Task>(`/tasks/${taskId}`, task);
   return response.data;
 }

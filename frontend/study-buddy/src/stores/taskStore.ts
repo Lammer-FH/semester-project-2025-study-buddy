@@ -53,6 +53,7 @@ export const useTaskStore = defineStore("task", {
       this.isLoading = true;
       this.error = null;
       try {
+        console.log("updating from store ", id, updatedData);
         const updated = await updateTask(id, updatedData);
         const index = this.list.findIndex((t: Task) => t.id === id);
         if (index !== -1) {
