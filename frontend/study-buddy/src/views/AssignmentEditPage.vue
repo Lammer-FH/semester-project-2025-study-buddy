@@ -54,7 +54,7 @@ export default defineComponent({
     async loadData() {
       console.log("Assignment ID:", this.assignmentId);
       try {
-        this.assignmentStore.getAssignment(this.assignmentId);
+        await this.assignmentStore.getAssignment(this.assignmentId);
 
         if (this.assignmentStore.currentAssignment) {
           this.assignment = this.assignmentStore.currentAssignment;

@@ -54,12 +54,15 @@ export default defineComponent({
       return this.assignmentStore.error;
     },
   },
+  async ionViewWillEnter() {
+    await this.assignmentStore.listAll();
+  },
   methods: {
     clearError() {
       this.assignmentStore.error = null;
     },
-    confirmDelete(assignmentId: number) {
-      this.assignmentStore.getAssignment(assignmentId);
+    async confirmDelete(assignmentId: number) {
+      await this.assignmentStore.getAssignment(assignmentId);
       if (this.assignmentStore.currentAssignment) {
         this.assignmentIdToDelete = assignmentId;
         this.assignmentTitleToDelete =
@@ -90,11 +93,8 @@ export default defineComponent({
       });
     },
   },
-  ionViewWillEnter() {
-    this.assignmentStore.listAll();
-  },
-  mounted() {
-    this.assignmentStore.listAll();
-  },
+  // mounted() {
+  //   this.assignmentStore.listAll();
+  // },
 });
 </script>
