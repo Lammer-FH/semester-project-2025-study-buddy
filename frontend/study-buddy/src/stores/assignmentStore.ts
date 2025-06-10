@@ -44,8 +44,9 @@ export const useAssignmentStore = defineStore("assignment", {
       }
     },
 
-    getAssignment(id: number): void {
+    async getAssignment(id: number): Promise<void> {
       const found = this.list.find((item: Assignment) => item.id === id);
+      console.log("found Assignment", found);
       this.currentAssignment = found ?? null;
     },
 

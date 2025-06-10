@@ -147,10 +147,8 @@ export default defineComponent({
       }
 
       await this.courseStore.getCourse(id);
-      if (this.courseStore.currentCourseId) {
-        await this.assignmentStore.fetchAllAssignmentByCourseId(
-          this.courseStore.currentCourseId
-        );
+      if (id) {
+        await this.assignmentStore.fetchAllAssignmentByCourseId(id);
       }
     },
     getValidCourseId(): number | null {
@@ -170,6 +168,7 @@ export default defineComponent({
     },
     async goToAssignmentPage(assignmentId: number) {
       await this.assignmentStore.selectAssignment(assignmentId);
+      console.log("setting a id course page", assignmentId);
       this.$router.push({
         path: `/tabs/assignment/${assignmentId}/tasks`,
         query: { from: `/tabs/course/${this.courseId}` },
@@ -200,7 +199,6 @@ export default defineComponent({
     },
     ionViewWillLeave() {
       this.courseStore.clearData();
-      this.assignmentStore.clearData();
     },
     async ionViewWillEnter() {
       await this.loadCourseData();

@@ -28,6 +28,25 @@
           <p class="assignment-description">
             {{ assignmentStore.currentAssignment.description }}
           </p>
+          <div class="assignment-meta">
+            <ion-chip
+              v-if="assignmentStore.currentAssignment.deadline"
+              color="primary"
+              outline
+            >
+              <ion-icon :icon="calendarOutline" />
+              <ion-label
+                >Due:
+                {{
+                  formatDate(assignmentStore.currentAssignment.deadline)
+                }}</ion-label
+              >
+            </ion-chip>
+            <ion-chip :color="getStatusColor()" outline>
+              <ion-icon :icon="getStatusIcon()" />
+              <ion-label>{{ getStatusText() }}</ion-label>
+            </ion-chip>
+          </div>
         </div>
       </div>
     </div>
@@ -89,7 +108,6 @@
           ></ion-textarea>
         </ion-item>
       </ion-content>
-
       <ion-footer>
         <ion-toolbar>
           <ion-grid>
@@ -137,6 +155,10 @@ import {
   add,
   closeOutline,
   checkmarkOutline,
+  calendarOutline,
+  checkmarkCircleOutline,
+  timeOutline,
+  alertCircleOutline,
 } from "ionicons/icons";
 import {
   IonButton,
@@ -154,6 +176,7 @@ import {
   IonGrid,
   IonHeader,
   IonFooter,
+  IonChip,
 } from "@ionic/vue";
 import { Task } from "@/types/task";
 
@@ -177,6 +200,7 @@ export default defineComponent({
     IonGrid,
     IonHeader,
     IonFooter,
+    IonChip,
   },
   data() {
     return {
@@ -187,6 +211,10 @@ export default defineComponent({
       terminalOutline,
       closeOutline,
       checkmarkOutline,
+      checkmarkCircleOutline,
+      timeOutline,
+      calendarOutline,
+      alertCircleOutline,
       taskIdToDelete: null as number | null,
       taskDescriptionToDelete: "",
       showDialog: false,
@@ -209,20 +237,23 @@ export default defineComponent({
       return Number(this.$route.params.id);
     },
   },
-  async mounted() {
-    await this.loadTaskData();
-  },
+  // async mounted() {
+  //   console.log("mounted");
+  //   await this.loadTaskData();
+  // },
   async ionViewWillEnter() {
+    console.log("entered");
+    // await this.assignmentStore.getAssignment(this.assignmentId);
     await this.loadTaskData();
   },
-  watch: {
-    "$route.params.id"() {
-      // Only load course data if we're actually on a course page
-      if (this.$route.name === "AssignmentPage") {
-        this.loadTaskData();
-      }
-    },
-  },
+  // watch: {
+  //   async "$route.params.id"() {
+  //     // Only load course data if we're actually on a course page
+  //     if (this.$route.name === "AssignmentPage") {
+  //       await this.loadTaskData();
+  //     }
+  //   },
+  // },
   methods: {
     async loadTaskData() {
       const id = this.getValidAssignmentId();
@@ -231,8 +262,8 @@ export default defineComponent({
         this.$router.replace("/tabs/assignment-list");
         return;
       }
-      await this.assignmentStore.selectAssignment(id);
-      this.assignmentStore.getAssignment(id);
+      console.log("load task data get assignmnet", id);
+      await this.assignmentStore.getAssignment(id);
       if (this.assignmentStore.currentAssignment) {
         console.log(
           "Set current assignmment to ",
@@ -248,8 +279,6 @@ export default defineComponent({
     async handleEdit(task: Task) {
       console.log("Editing task", task);
       await this.taskStore.update(task.id, task);
-
-      // awai this.taskStore.update(this.)
     },
     async confirmDelete(taskId: number) {
       console.log("deleting task", taskId);
@@ -288,6 +317,51 @@ export default defineComponent({
         this.error = "Failed to create task. Please try again.";
       }
     },
+    formatDate(dateString: string): string {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    },
+
+    getStatusText(): string {
+      if (!this.tasks.length) return "No tasks";
+      const completed = this.tasks.filter((t: Task) => t.done).length;
+      const total = this.tasks.length;
+      if (completed === total) return "Complete";
+      if (completed === 0) return "Not started";
+      return "In progress";
+    },
+
+    getStatusColor(): string {
+      const status = this.getStatusText();
+      switch (status) {
+        case "Complete":
+          return "success";
+        case "In progress":
+          return "warning";
+        case "Not started":
+          return "medium";
+        default:
+          return "medium";
+      }
+    },
+
+    getStatusIcon() {
+      const status = this.getStatusText();
+      switch (status) {
+        case "Complete":
+          return checkmarkCircleOutline;
+        case "In progress":
+          return timeOutline;
+        case "Not started":
+          return alertCircleOutline;
+        default:
+          return alertCircleOutline;
+      }
+    },
   },
 });
 </script>
@@ -302,7 +376,11 @@ ion-footer ion-toolbar {
   font-size: 1.2em;
   vertical-align: middle;
 }
-
+.assignment-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 .loading-spinner {
   display: flex;
   justify-content: center;
@@ -417,7 +495,7 @@ ion-footer ion-toolbar {
 
 /* Modal Styles */
 ion-modal {
-  --height: 60%;
+  --height: 40% !important;
   --border-radius: 16px;
   --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
     0 4px 6px -4px rgb(0 0 0 / 0.1);
