@@ -42,13 +42,13 @@ export default defineComponent({
         : "/tabs/assignment-list";
     },
   },
-  async created() {
-    await this.loadData();
-  },
-  async ionViewWillLeave() {
+  // async created() {
+  // },
+  async ionViewWillEnter() {
     console.log("ionViewWillEnter fired ✅");
     this.assignment = null;
     this.loading = true;
+    await this.loadData();
   },
   methods: {
     async loadData() {
