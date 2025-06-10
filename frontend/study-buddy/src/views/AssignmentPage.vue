@@ -141,6 +141,7 @@ import {
   IonLabel,
   IonTextarea,
 } from "@ionic/vue";
+import { Task } from "@/types/task";
 
 export default defineComponent({
   name: "AssignmentPage",
@@ -225,8 +226,11 @@ export default defineComponent({
       const id = Number(this.$route.params.id);
       return isNaN(id) ? null : id;
     },
-    handleEdit() {
-      console.log("Editing task");
+    async handleEdit(task: Task) {
+      console.log("Editing task", task);
+      await this.taskStore.update(task.id, task);
+
+      // awai this.taskStore.update(this.)
     },
     confirmDelete(taskId: number) {
       console.log("deleting task", taskId);
@@ -246,12 +250,6 @@ export default defineComponent({
 
       try {
         await this.taskStore.create(this.assignmentId, this.newTask);
-        // Here you would typically call your task store to create the task
-        // Example: await this.taskStore.createTask({
-        //   description: this.newTaskDescription.trim(),
-        //   assignmentId: this.assignmentId
-        // });
-
         console.log(
           "Creating task with description:",
           this.newTask.description.trim()

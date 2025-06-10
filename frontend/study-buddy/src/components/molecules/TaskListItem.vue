@@ -105,6 +105,8 @@ export default {
   },
   methods: {
     handleToggleComplete() {
+      const done = !this.task.done;
+      console.log("Changing toggle to from ", done, this.task.done);
       this.$emit("update-task", {
         ...this.task,
         done: !this.task.done,
@@ -119,6 +121,7 @@ export default {
     },
     handleSaveEdit() {
       if (!this.editText.trim()) return;
+      console.log("edited task text to", this.editText);
       this.$emit("update-task", {
         ...this.task,
         description: this.editText.trim(),
